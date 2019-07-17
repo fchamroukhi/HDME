@@ -1,6 +1,9 @@
-============================================================
-REGULARIZED MIXTURE OF EXPERTS FOR GENERALIZED LINEAR MODELS
-============================================================
+========================================================================================================================================
+R Toolbox containing the packages to run the algorithms and to produce the results presented in submitted the paper:
+Estimation and Feature Selection in Mixtures of Generalized Linear Experts Models.
+Ref: arXiv:1907.06994, July, 2019 by Tuyen Huynh and Faicel Chamroukhi.
+Please cite the paper and the toolbox when using the code!
+========================================================================================================================================
 We introduce 3 packages for the Regularized Mixture of Experts models using the Lasso penalty:
 	+ Gaussian: RMoE package;
 	+ Poisson: PoissonRMoE package;
