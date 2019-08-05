@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "RMoE = function(Xm, Ym, K, Lambda, Gamma, option)\n{\nlibrary(plot3D)\nlibrary(stats)\nlibrary(graphics)\nlibrary(MASS)\nlibrary(base)\nlibrary(doParallel)\nlibrary(foreach)\n#setDefaultCluster(makePSOCKcluster(K))\n#=========Parallel==============\ncl = makeCluster(K)\nregisterDoParallel(cl)\ngetDoParWorkers()\n#MAXLOG = -10^6\nX <<- Xm\nY <<- Ym\n#================Penalty parameters for Housing Data\n# lambda = c(rep(42,K))\n# gamma = c(rep(10,K-1))\n#================Penalty parameters for RB Data and BB Data\nlambda <<- c(rep(Lambda,K))\ngamma = c(rep(Gamma,K-1))\n#rho = 0.1*log(n)\nrho = 0\n#===================\npik = c(rep(0, K))\nNstep = 5000\narr = c(rep(0, Nstep))\nZMat <<- matrix(rep(0, Nstep*K), ncol=K)\neps = 1e-5\nd <<- dim(X)[2] #dim of X: d = p+1\nn <<- dim(X)[1]\nS <<- runif(1, min = 5, max = 20) #variance\nwk = matrix(rep(0,(K-1)*d), ncol = d)\nbetak <<- matrix(rep(0, d*K), ncol = K)\n#Generated Beta\nfor (k in 1:K)\n{\n  betak[,k] = runif(d,-5,5)\n}\n#------------------------\nsource(\"Estep.R\")\nsource(\"PMstep.R\") #Programing in parallel\nsource(\"SMstep.R\")\nsource(\"LOG.R\")\nsource(\"ZeroCoeff.R\")\nsource(\"BIC.R\")\n#source(\"Plot.R\")\nsource(\"Write.R\")\n#-------Choose the method\nif(option) source(\"CoorGateP1.R\")\nelse source(\"CoorGateP.R\")\n#----------------------\ntau = matrix(rep(0,n*K), ncol=K)\nL2 = LOG(X, Y, wk, betak, S, lambda, gamma, rho)\nstep = 1\narr[step] = L2\nprint(paste(\"Step:\", step))\nprint(\"betak:\")\nprint(betak)\nprint(\"wk: \")\nprint(wk)\nprint(paste(\"Sigma: \", sqrt(S)))\nprint(paste(\"LOG: \", L2))\nrepeat\n{\n  step =step+1\n  L1 = L2\n  tau = e.step(betak, wk, S, Y, X, K)\n  # para = pm.step(tau, X, Y, d, K, S, lambda, betak)\n  # pik = do.call(rbind,para[1])\n  # betak = do.call(rbind,para[2])\n  betak = pm.step(tau, X, Y, d, K, S, lambda, betak, cl)\n  wk = CoorGateP(X, wk, tau, gamma, rho)\n  tau = e.step(betak, wk, S, Y, X, K)\n  S = sm.step(tau, X, Y, K, betak)\n  L2 = LOG(X, Y, wk, betak, S, lambda, gamma, rho)\n  ZeroCoeff(betak, d, K, step, ZMat)\n  arr[step] = L2\n  print(paste(\"Step:\", step))\n  print(\"betak:\")\n  print(betak)\n  print(\"wk: \")\n  print(wk)\n  print(paste(\"Sigma: \", sqrt(S)))\n  print(paste(\"LOG: \", L2))\n  if((L2-L1)/abs(L1) < eps) break\n}\nprint(paste(\"Number of steps: \", step))\nprint(paste(\"betak: \"))\nprint(betak)\nprint(\"wk: \")\nprint(wk)\nprint(paste(\"Sigma: \", sqrt(S)))\nprint(paste(\"LOG value: \", L2))\nStep = seq.int(1, step)\nArr = c(rep(0, step))\n#===========The BIC value\nBIC = BIC(X, Y, wk, betak, S)\nprint(paste(\"BIC: \", BIC))\nfor(i in 1:step)\n{\n  Arr[i]=arr[i]\n}\nprint(Arr)\n#if(L2 > MAXLOG)\n{\n  MAXbetak <<- betak\n  MAXS <<- S\n  MAXwk <<- wk\n  MAXLOG <<- L2\n  MAXBIC <<-BIC\n}\n#===============Plot Zero Coefficient============\nU = t(ZMat)\nU = t(U[,c(1:step)])\nmatplot(U, type = c(\"o\"), pch=19, col=1:K, xlab = 'Step', ylab = 'Number of Zero Coefficients')\n#==============Plot Log-likelihood value========\nmatplot(Step, Arr, col = \"blue\",type=\"o\",pch=19,xlab = 'Step', ylab = 'Log-likelihood')\non.exit(stopCluster(cl))\n#==============Plot histogram of Y================\n# hist(Y, breaks = 15, main=\"Histogram for MEDV/sd(MEDV)\",\n#      xlab=\"MEDV/sd(MEDV)\", ylab = \"Density\",\n#      border=\"black\",col=\"green\",prob=TRUE)\n# lines(density(Y))\nWRITERES()\nreturn()\n}\n",
+    "created" : 1565001374328.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1218531431",
+    "id" : "5F7A3DD2",
+    "lastKnownWriteTime" : 1565001529,
+    "last_content_update" : 1565001529384,
+    "path" : "~/data/data-Research/my-codes/My-Open-Access-Codes/prEMME/RMoE/R/RMoE.R",
+    "project_path" : "R/RMoE.R",
+    "properties" : {
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
