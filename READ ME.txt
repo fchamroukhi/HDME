@@ -32,7 +32,6 @@ where
 + option: we use two methods to maximizing the M-step: proximal Newton and proximal Newton-type method. 
 	- For proximal Newton: option = 0;
 	- For proximal Newton-type: option = 1;
-Note that, the EM algorithm based on proximal Newton method can be stuck, especially in logistic model. In this case, the proximal Newton-type approach is a suitable choice. 
 
 ======================
        RESULTS 

@@ -2,20 +2,16 @@
 e.step = function(betak, wk, Y, X, K)
 {
   source("Pik.R")
-  tau = matrix(rep(0,n*K), ncol=K) 
+  pikFk = matrix(rep(0,n*K), ncol=K)
   #n = dim(X)[1]
   pik = Pik(n, K, X, wk)
-  for (i in 1:n)
-  { Sum = 0
     for(k in 1:K)
     {
-      mu = X[i,]%*%as.matrix(betak[,k])
+      mu = X%*%as.matrix(betak[,k])
       Lam = exp(mu)
-      tau[i,k] = pik[i,k]*dpois(Y[i],Lam)
-      #print(tau[i,k])
-      Sum = Sum + tau[i,k]
+      pikFk[,k] = pik[,k]*dpois(Y,Lam)
     }
-  tau[i,] = tau[i,]/Sum
-  }
+  fMoE = matrix(rep(rowSums(pikFk), K), ncol=K)
+  tau = pikFk/fMoE
   return (tau)
 }
