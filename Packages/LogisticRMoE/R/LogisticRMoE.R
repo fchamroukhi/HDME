@@ -56,7 +56,7 @@ L2 = LOG(X, Y, wk, eta, lambda, gamma, rho)
 step = 1
 arr[step] = L2
 print(paste("Step:", step))
-print("Beta:")
+print("Eta:")
 for(k in 1:K) print(eta[k,,])
 print("wk: ")
 print(wk)
@@ -75,7 +75,7 @@ repeat
   #ZeroCoeff(betak, d, K, step, ZMat)
   arr[step] = L2
   print(paste("Step:", step))
-  print("Beta:")
+  print("Eta:")
   for(k in 1:K) print(eta[k,,])
   print("wk: ")
   print(wk)
@@ -84,7 +84,7 @@ repeat
 }
 print(paste("Number of steps: ", step))
 print(paste("Step:", step))
-print("Beta:")
+print("Eta:")
 for(k in 1:K) print(eta[k,,])
 print("wk: ")
 print(wk)

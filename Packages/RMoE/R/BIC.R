@@ -1,14 +1,14 @@
 #BIC  function
 BIC = function(X, Y, wk, betak, S)
-{
+{ 
   source("Pik.R")
   p = dim(X)[2]-1
-  #n = dim(X)[1]
+  n = dim(X)[1]
   pik = Pik(n, K, X, wk)
   beta = as.matrix(betak[-1,]) #remove first row of betak
   if(p==1) beta = t(beta)
   w = wk[,-1] #remove first column of wk
-  DF = 0
+  DF = 0 
   for(k in 1:K)
   {
     for (j in 1:p)
@@ -23,16 +23,20 @@ BIC = function(X, Y, wk, betak, S)
   d = dim(X)[2]
   S0 = 0
   n = dim(X)[1]
-  for(i in 1:n)
-  {
-    S1 = 0
-    for(k in 1:K)
-    {
-      S1 = S1+pik[i,k]*dnorm(Y[i],X[i,]%*%as.matrix(betak[,k]),sqrt(S))
-    }
-    S1 = log(S1)
-    S0 = S0+S1
-  }
+  # for(i in 1:n)
+  # {
+  #   S1 = 0
+  #   for(k in 1:K)
+  #   {
+  #     S1 = S1+pik[i,k]*dnorm(Y[i],X[i,]%*%as.matrix(betak[,k]),sqrt(S))
+  #   }
+  #   S1 = log(S1)
+  #   S0 = S0+S1
+  # }
+  mu = X%*%betak
+  tau = pik*dnorm(Y, mu, sqrt(S))
+  S = log(rowSums(tau))
+  S0 = sum(S)
   S0 = S0 - log(n)*DF/2
   return (S0)
 }
