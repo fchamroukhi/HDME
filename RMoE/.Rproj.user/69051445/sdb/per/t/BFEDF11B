@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "LogisticRMoE = function(Xmat, Ymat, K, Lambda, Gamma, option)\n{\n# option = 1: proximal Newton-type, 0: proximal Newton\nlibrary(plot3D)\nlibrary(stats)\nlibrary(graphics)\nlibrary(MASS)\nlibrary(base)\nlibrary(doParallel)\nlibrary(foreach)\n#setDefaultCluster(makePSOCKcluster(K))\n#=========Parallel==============\ncl = makeCluster(K)\nregisterDoParallel(cl)\ngetDoParWorkers()\n#==============================\nX <<- Xmat\nY <<- Ymat\nn <<- dim(X)[1]\nd <<- dim(X)[2]\nR <<- max(Y)\n#===============================\nlambda <<- matrix(rep(Lambda,(R-1)*K), ncol=(R-1))\ngamma = c(rep(Gamma,K-1))\nrho = 0\nU <<- matrix(rep(0,n*R), ncol=R)\nfor (i in 1:n) U[i,Y[i]] = 1\n#MAXLOG = -10^6\n#===================\npik = c(rep(0, K))\nNstep = 1000\narr = c(rep(0, Nstep))\nZMat = matrix(rep(0, Nstep*K), ncol=K)\neps = 1e-4\nwk = matrix(rep(0,(K-1)*d), ncol = d)\neta <<- array(0, dim = c(K,R-1,d))\n#Generated eta\nfor (k in 1:K)\n{\n  for(r in 1:(R-1))\n  {\n    eta[k,r,] = runif(d,-6,6)\n  }\n}\n#------------------------\nsource(\"LEstep.R\")\nsource(\"LPMstep.R\") #Programing in parallel\nsource(\"LLOG.R\")\n#source(\"ZeroCoeff.R\")\nif(option==1) source(\"CoorGateP1.R\")\nelse source(\"CoorGateP.R\")\nsource(\"LBIC.R\")\n#source(\"Plot.R\")\nsource(\"LWrite.R\")\n#----------------------\ntau <<- matrix(rep(0,n*K), ncol=K)\nL2 = LLOG(X, Y, wk, eta, lambda, gamma, rho)\nstep = 1\narr[step] = L2\nprint(paste(\"Step:\", step))\nprint(\"Eta:\")\nfor(k in 1:K) print(eta[k,,])\nprint(\"wk: \")\nprint(wk)\nprint(paste(\"LOG: \", L2))\nBEGIN = Sys.time()\nrepeat\n{\n  step =step+1\n  L1 = L2\n  #---------E-step\n  tau = Le.step(eta, wk, Y, X, K, R)\n  #---------M-step\n  wk = CoorGateP(X, wk, tau, gamma, rho)\n  eta = Lpm.step(X, Y, U, R, eta, tau, lambda, cl, option)\n  L2 = LLOG(X, Y, wk, eta, lambda, gamma, rho)\n  #ZeroCoeff(betak, d, K, step, ZMat)\n  arr[step] = L2\n  print(paste(\"Step:\", step))\n  print(\"Beta:\")\n  for(k in 1:K) print(eta[k,,])\n  print(\"wk: \")\n  print(wk)\n  print(paste(\"LOG: \", L2))\n  if((L2-L1) < eps) break\n}\nprint(paste(\"Number of steps: \", step))\nprint(paste(\"Step:\", step))\nprint(\"Eta:\")\nfor(k in 1:K) print(eta[k,,])\nprint(\"wk: \")\nprint(wk)\nprint(paste(\"LOG value: \", L2))\nBIC = LBIC(X, Y, wk, etak)\nprint(paste(\"BIC value: \", BIC))\nStep = seq.int(1, step)\nArr = c(rep(0, step))\nfor(i in 1:step)\n{\n  Arr[i]=arr[i]\n}\nprint(Arr)\nEND = Sys.time()\ntime = END - BEGIN\nprint(paste(\"Time: \", time))\n#if(L2 > MAXLOG)\n{\n  MAXeta <<- eta\n  MAXwk <<- wk\n  MAXLOG <<- L2\n  MAXBIC <<-BIC\n}\n#===============Plot Zero Coefficient============ Need to FIX\n# U = t(ZMat)\n# U = t(U[,c(1:step)])\n# matplot(U, type = c(\"o\"), pch=19, col=1:K, xlab = 'Step', ylab = 'Number of Zero Coefficients')\n#===========The BIC value\n#BIC = BIC(X, Y, wk, betak, S)\n#print(paste(\"BIC: \", BIC))\n#==============Plot Log-likelihood value========\nmatplot(Step, Arr, col = \"blue\",type=\"o\",pch=19,xlab = 'Step', ylab = 'Log-likelihood')\non.exit(stopCluster(cl))\n#==============Plot histogram of Y================\n# hist(Y, breaks = 15, main=\"Histogram for MEDV/sd(MEDV)\",\n#      xlab=\"MEDV/sd(MEDV)\", ylab = \"Density\",\n#      border=\"black\",col=\"green\",prob=TRUE)\n# lines(density(Y))\nLWRITERES()\nreturn()\n}\n",
+    "created" : 1570542633326.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1224045197",
+    "id" : "BFEDF11B",
+    "lastKnownWriteTime" : 1570542753,
+    "last_content_update" : 1570542753117,
+    "path" : "D:/R code/Packages/RMoE/R/LogisticRMoE.R",
+    "project_path" : "R/LogisticRMoE.R",
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

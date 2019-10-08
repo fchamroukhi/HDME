@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#M-stepS\nsm.step = function(tau, X, Y, K, wk)\n{\n  #n = dim(X)[1]\n  S1 = 0\n  for(k in 1:K)\n  {\n    temp = t(as.matrix(tau[,k]))%*%(Y - X%*%as.matrix(wk[,k]))^2\n    S1 = S1+ colSums(temp,1)\n  }\n  S1 = S1/n\n  return (S1)\n}\n",
+    "created" : 1570543230240.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3394435011",
+    "id" : "121D7926",
+    "lastKnownWriteTime" : 1570540209,
+    "last_content_update" : 1570540209,
+    "path" : "D:/R code/Packages/RMoE/R/GSMstep.R",
+    "project_path" : "R/GSMstep.R",
+    "properties" : {
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

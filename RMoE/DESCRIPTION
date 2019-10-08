@@ -1,0 +1,11 @@
+Package: RMoE
+Type: Package
+Title: This package estimates the LASSO regularized Mixture of Experts models.
+Version: 0.1.0
+Author: Bao-Tuyen Huynh, Faicel Chamroukhi
+Maintainer: The package maintainer <baotuyen.dlu@gmail.com>
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
