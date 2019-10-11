@@ -1,7 +1,7 @@
 #BIC  function
 GBIC = function(X, Y, wk, betak, S)
 {
-  source("Pik.R")
+  # source("Pik.R")
   p = dim(X)[2]-1
   n = dim(X)[1]
   pik = Pik(n, K, X, wk)

@@ -1,7 +1,7 @@
 #M-step parallel
 Ppm.step = function(tau, X, Y, K, lambda, betak, cl)
 {
-  source("PCoorExpP.R")
+  # source("PCoorExpP.R")
   #n = dim(X)[1]
   #Update Pik
   #pik = colSums(tau,1)/n

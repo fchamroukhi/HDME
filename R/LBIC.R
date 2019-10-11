@@ -1,8 +1,8 @@
 #BIC  function
 LBIC = function(X, Y, wk, etak)
 {
-  source("Pik.R")
-  source("LPi.R")
+  # source("Pik.R")
+  # source("LPi.R")
   #d = dim(X)[2]
   p = d-1
   #n = dim(X)[1]

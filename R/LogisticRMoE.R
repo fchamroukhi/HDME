@@ -1,13 +1,13 @@
 LogisticRMoE = function(Xmat, Ymat, K, Lambda, Gamma, option)
 {
 # option = 1: proximal Newton-type, 0: proximal Newton
-library(plot3D)
-library(stats)
-library(graphics)
-library(MASS)
-library(base)
-library(doParallel)
-library(foreach)
+# library(plot3D)
+# library(stats)
+# library(graphics)
+# library(MASS)
+# library(base)
+# library(doParallel)
+# library(foreach)
 #setDefaultCluster(makePSOCKcluster(K))
 #=========Parallel==============
 cl = makeCluster(K)
@@ -43,15 +43,15 @@ for (k in 1:K)
   }
 }
 #------------------------
-source("LEstep.R")
-source("LPMstep.R") #Programing in parallel
-source("LLOG.R")
-#source("ZeroCoeff.R")
-if(option==1) source("CoorGateP1.R")
-else source("CoorGateP.R")
-source("LBIC.R")
-#source("Plot.R")
-source("LWrite.R")
+# source("LEstep.R")
+# source("LPMstep.R") #Programing in parallel
+# source("LLOG.R")
+# #source("ZeroCoeff.R")
+# if(option==1) source("CoorGateP1.R")
+# else source("CoorGateP.R")
+# source("LBIC.R")
+# #source("Plot.R")
+# source("LWrite.R")
 #----------------------
 tau <<- matrix(rep(0,n*K), ncol=K)
 L2 = LLOG(X, Y, wk, eta, lambda, gamma, rho)

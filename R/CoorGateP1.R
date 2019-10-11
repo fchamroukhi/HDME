@@ -1,8 +1,8 @@
 CoorGateP = function(X, wk, tau, Gamma, rho)
 { #using proximal Newton-type
-  source("Fs.R")
-  source("CoorLQk.R")
-  source("Pik.R")
+  # source("Fs.R")
+  # source("CoorLQk.R")
+  # source("Pik.R")
   #n = dim(X)[1]
   P_k = c(rep(0,n))
   d_k = c(rep(1/4,n))

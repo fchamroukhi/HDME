@@ -1,7 +1,7 @@
 #Log likelihood
 PLOG = function(X, Y, wk, betak, lambda, gamma, rho)
 {
-  source("Pik.R")
+  # source("Pik.R")
   #Do for dim X > 2 to tranlate beta into matrix
   pik = Pik(n, K, X, wk)
   beta = abs(betak[-1,])

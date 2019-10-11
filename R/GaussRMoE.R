@@ -1,12 +1,12 @@
 GaussRMoE = function(Xm, Ym, K, Lambda, Gamma, option)
 {
-library(plot3D)
-library(stats)
-library(graphics)
-library(MASS)
-library(base)
-library(doParallel)
-library(foreach)
+# library(plot3D)
+# library(stats)
+# library(graphics)
+# library(MASS)
+# library(base)
+# library(doParallel)
+# library(foreach)
 #setDefaultCluster(makePSOCKcluster(K))
 #=========Parallel==============
 cl = makeCluster(K)
@@ -40,17 +40,17 @@ for (k in 1:K)
   betak[,k] = runif(d,-5,5)
 }
 #------------------------
-source("GEstep.R")
-source("GPMstep.R") #Programing in parallel
-source("GSMstep.R")
-source("GLOG.R")
-#source("ZeroCoeff.R")
-source("GBIC.R")
-#source("Plot.R")
-source("GWrite.R")
-#-------Choose the method
-if(option) source("CoorGateP1.R")
-else source("CoorGateP.R")
+# source("GEstep.R")
+# source("GPMstep.R") #Programing in parallel
+# source("GSMstep.R")
+# source("GLOG.R")
+# #source("ZeroCoeff.R")
+# source("GBIC.R")
+# #source("Plot.R")
+# source("GWrite.R")
+# #-------Choose the method
+# if(option) source("CoorGateP1.R")
+# else source("CoorGateP.R")
 #----------------------
 tau = matrix(rep(0,n*K), ncol=K)
 L2 = GLOG(X, Y, wk, betak, S, lambda, gamma, 0)

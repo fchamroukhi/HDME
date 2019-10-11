@@ -2,9 +2,9 @@ LCoorExpP = function(X, Y, U, R, eta, tau, lambda, k)
   #Proximal Newton-type for the #k Expert parameter eta[k,,]
   #Input: array[eta], k, lambda[k]
 {
-  source("LFk.R")
-  source("CoorLQk.R")
-  source("Pik.R")
+  # source("LFk.R")
+  # source("CoorLQk.R")
+  # source("Pik.R")
   n = dim(X)[1]
   P_r = c(rep(0,n))
   d_r = c(rep(1/4,n))

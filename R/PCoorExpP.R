@@ -1,9 +1,9 @@
 PCoorExpP = function(X, Y, betak, tau, lambda, k)
 {
 #Input matrix betak and k (for parallel programing)
-  source("PQk.R")
-  source("CoorLQk.R")
-  source("Pik.R")
+  # source("PQk.R")
+  # source("CoorLQk.R")
+  # source("Pik.R")
   n = dim(X)[1]
   P_k = c(rep(0,n))
   d_k = c(rep(0,n))

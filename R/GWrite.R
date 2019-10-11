@@ -8,7 +8,7 @@ GWRITERES = function()
   #   MAXbetak[,2] = temp
   #   MAXwk = - MAXwk
   # }
-  source("GEstep.R")
+  # source("GEstep.R")
   Para = cbind(MAXbetak, t(MAXwk))
   write.table(Para, file = "GPara.txt", sep = '\t', append = FALSE, col.names = FALSE, row.names = FALSE)
   write.table(sqrt(MAXS), file = "GSigma.txt", append = FALSE, col.names = FALSE, row.names = FALSE)

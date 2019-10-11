@@ -2,12 +2,12 @@ CoorLQk = function(X, Y, tau, u, Gammak, rho)
     #Find MINIMUM of penalized function
     #u vector of parameters (alpha, beta) represent wk_k
     #true tau is in c_k
-    #tau vector represent by d_k 
+    #tau vector represent by d_k
  {
    epsilon = 10^(-6) #Stopping condition
     # arr = c(rep(0, 300))
-    source("Obj.R")
-    source("SoTh.R")
+    # source("Obj.R")
+    # source("SoTh.R")
     #X = as.matrix(X)
     #Y = as.matrix(Y)
     d = dim(X)[2]
@@ -57,4 +57,4 @@ CoorLQk = function(X, Y, tau, u, Gammak, rho)
     # print(step)
     # lines2D(Step, Arr, col = "blue")
     return (u)
-}  
+}

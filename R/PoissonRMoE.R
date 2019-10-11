@@ -1,12 +1,12 @@
 PoissonRMoE = function(Xmat, Ymat, K, Lambda, Gamma, option)
 {
-library(plot3D)
-library(stats)
-library(graphics)
-library(MASS)
-library(base)
-library(doParallel)
-library(foreach)
+# library(plot3D)
+# library(stats)
+# library(graphics)
+# library(MASS)
+# library(base)
+# library(doParallel)
+# library(foreach)
 #setDefaultCluster(makePSOCKcluster(K))
 #=========Parallel==============
 cl = makeCluster(K)
@@ -36,19 +36,19 @@ for(runstep in 1:N)
   wk = matrix(rep(0,(K-1)*d), ncol = d)
   betak <<- matrix(rep(0,K*d), ncol = K)
 #===========Generated Beta for the experts
-  source("PInitial.R")
-  #for(k in 1:K)  betak[,k] = runif(d,-2,2)
-  #------------------------
-  source("PEstep.R")
-  source("PPMstep.R") #Programing in parallel
-  source("PLOG.R")
-  #source("NPLOG.R")
-  #source("ZeroCoeff.R")
-  if(option) source("CoorGateP1.R")
-  else source("CoorGateP.R")
-  source("PBIC.R")
-  #source("Plot.R")
-  source("PWrite.R")
+  # source("PInitial.R")
+  # #for(k in 1:K)  betak[,k] = runif(d,-2,2)
+  # #------------------------
+  # source("PEstep.R")
+  # source("PPMstep.R") #Programing in parallel
+  # source("PLOG.R")
+  # #source("NPLOG.R")
+  # #source("ZeroCoeff.R")
+  # if(option) source("CoorGateP1.R")
+  # else source("CoorGateP.R")
+  # source("PBIC.R")
+  # #source("Plot.R")
+  # source("PWrite.R")
   #----------------------
   tau <<- matrix(rep(0,n*K), ncol=K)
   repeat{

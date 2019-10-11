@@ -1,8 +1,8 @@
 #E-step
 Le.step = function(eta, wk, Y, X, K, R)
 {
-  source("Pik.R")
-  source("LPi.R")
+  # source("Pik.R")
+  # source("LPi.R")
   n = dim(X)[1]
   tau = matrix(rep(0,n*K), ncol=K)
   pik = Pik(n, K, X, wk)

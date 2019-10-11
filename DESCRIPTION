@@ -1,11 +1,61 @@
 Package: RMoE
 Type: Package
-Title: This package estimates the LASSO regularized Mixture of Experts models.
+Title: LASSO Regularized Mixture of Experts Models
 Version: 0.1.0
-Author: Bao-Tuyen Huynh, Faicel Chamroukhi
-Maintainer: The package maintainer <baotuyen.dlu@gmail.com>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Authors@R: c(person("Bao-Tuyen", "Huynh", role = c("aut", "cre"), 
+    email = "baotuyen.dlu@gmail.com"),
+    person("Faicel", "Chamroukhi", role = c("aut"),
+    comment = c(ORCID = "0000-0002-5894-3103"),
+    email = "faicel.chamroukhi@unicaen.fr"))
+Description: Regularized Mixture of Experts models using the Lasso penalty RMoE.
+    The main reference is the following one:
+    Huynh, B. T. (2019) <arXiv:1907.06994>.
+URL: https://github.com/fchamroukhi/HDME
+BugReports: https://github.com/fchamroukhi/HDME/issues
+License: GPL (>= 3)
+Imports: 
+    plot3D,
+    stats,
+    graphics,
+    MASS,
+    base,
+    doParallel,
+    foreach
+Collate:
+    Pik.R
+    GEstep.R
+    Obj.R
+    SoTh.R
+    CoorLQk.R
+    GPMstep.R
+    GSMstep.R
+    GLOG.R
+    GBIC.R
+    GWrite.R
+    Fs.R
+    CoorGateP1.R
+    CoorGateP.R
+    GaussRMoE.R
+    LogisticRMoE.R
+    LPi.R
+    LEstep.R
+    LFk.R
+    LCoorExpP1.R
+    LCoorExpP.R
+    LPMstep.R
+    LLOG.R
+    LBIC.R
+    LWrite.R
+    PoissonRMoE.R
+    PInitial.R
+    PEstep.R
+    PQk.R
+    PCoorExpP.R
+    PPMstep.R
+    PLOG.R
+    PBIC.R
+    PWrite.R
 Encoding: UTF-8
 LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.1.1

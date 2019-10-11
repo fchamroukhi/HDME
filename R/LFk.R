@@ -3,7 +3,7 @@ Fk = function(X, Y, R, tau, lambda, etak, k)
   #Compute the Q_k(eta_k;.) function in M-step for eta_k
   #input: matrix eta[k,,], k
   #remove the L2 norm
-  source("Pik.R")
+  # source("Pik.R")
   # source("Pi.R")
   n = dim(X)[1]
   d = dim(X)[2]

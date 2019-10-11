@@ -1,6 +1,6 @@
 Fs = function(X, tau, gamma, rho, wk)
 {# Q(pi;.) function in M-step
-  source("Pik.R")
+  # source("Pik.R")
   n = dim(X)[1]
   d = dim(X)[2]
   PI = matrix(rep(0, n*K), ncol=K)

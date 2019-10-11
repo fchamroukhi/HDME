@@ -1,7 +1,7 @@
 #E-step
 Pe.step = function(betak, wk, Y, X, K)
 {
-  source("Pik.R")
+  # source("Pik.R")
   tau = matrix(rep(0,n*K), ncol=K)
   #n = dim(X)[1]
   pik = Pik(n, K, X, wk)
