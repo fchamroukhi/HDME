@@ -3,3 +3,4 @@
 export(GaussRMoE)
 export(LogisticRMoE)
 export(PoissonRMoE)
+import(methods)

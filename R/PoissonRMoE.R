@@ -18,10 +18,11 @@
 #'   \item `PLOG.txt` the penalized log-likelihood value.
 #'   \item `PBIC.txt` the value of BIC.
 #'   \item `PMAXP.txt` the gating network's values for each observation.
-#'   \item `GSigma.txt` the value of sigma.
 #'   \item `PRestore data.txt` contains the input data and the classification
 #'     class (the last column) for each observation.
 #' }
+#' @return PoissonRMoE returns an object of class [PRMoE][PRMoE].
+#' @seealso [PRMoE]
 #' @export
 PoissonRMoE = function(Xmat, Ymat, K, Lambda, Gamma, option)
 {
@@ -152,5 +153,12 @@ for(runstep in 1:N)
 #==============Plot Log-likelihood value========
 graphics::matplot(Step, Arr, col = "blue",type="o",pch=19,xlab = 'Step', ylab = 'Log-likelihood')
 on.exit(parallel::stopCluster(cl))
-PWRITERES(MAXbetak, MAXwk, MAXLOG, MAXBIC, Y, X, K)
+
+###
+# PWRITERES(MAXbetak, MAXwk, MAXLOG, MAXBIC, Y, X, K)
+###
+
+model <- PRMoE(X = X, Y = Y, K = K, Lambda = Lambda, Gamma = Gamma,
+               wk = wk, betak = betak, loglik = L2,
+               storedloglik = Arr, BIC = BIC)
 }

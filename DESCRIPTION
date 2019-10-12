@@ -7,21 +7,25 @@ Authors@R: c(person("Bao-Tuyen", "Huynh", role = c("aut", "cre"),
     person("Faicel", "Chamroukhi", role = c("aut"),
     comment = c(ORCID = "0000-0002-5894-3103"),
     email = "faicel.chamroukhi@unicaen.fr"))
-Description: Regularized Mixture of Experts models using the Lasso penalty RMoE.
+Description: Regularized Mixture of Experts models using the Lasso penalty.
     The main reference is the following one:
     Huynh, B. T. (2019) <arXiv:1907.06994>.
 URL: https://github.com/fchamroukhi/HDME
 BugReports: https://github.com/fchamroukhi/HDME/issues
 License: GPL (>= 3)
+Depends: 
+    R (>= 2.10)
 Imports: 
-    plot3D,
+    methods,
     stats,
     graphics,
     MASS,
     base,
+    plot3D,
     doParallel,
     foreach
 Collate:
+    RMoE-package.R
     Pik.R
     GEstep.R
     Obj.R
@@ -35,8 +39,8 @@ Collate:
     Fs.R
     CoorGateP1.R
     CoorGateP.R
+    GRMoE-class.R
     GaussRMoE.R
-    LogisticRMoE.R
     LPi.R
     LEstep.R
     LFk.R
@@ -46,7 +50,8 @@ Collate:
     LLOG.R
     LBIC.R
     LWrite.R
-    PoissonRMoE.R
+    LRMoE-class.R
+    LogisticRMoE.R
     PInitial.R
     PEstep.R
     PQk.R
@@ -55,6 +60,16 @@ Collate:
     PLOG.R
     PBIC.R
     PWrite.R
+    PRMoE-class.R
+    PoissonRMoE.R
+    data-cleveland.R
+    data-gaussian.R
+    data-housing.R
+    data-ionosphere.R
+    data-logistic.R
+    data-musk1.R
+    data-poisson.R
+    data-residential.R
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

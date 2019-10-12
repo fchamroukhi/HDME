@@ -17,23 +17,16 @@ GaussRMoE(Xm, Ym, K, Lambda, Gamma, option)
 
 \item{Gamma}{Penalty value for the gating network.}
 
-\item{option}{\code{option = 1}: using proximal Newton-type method;
-\code{option = 0}: using proximal Newton method.}
+\item{option}{\code{option = 1}: using proximal Newton-type method; \code{option = 0}:
+using proximal Newton method.}
 }
 \value{
-A list with the following objects.
-\itemize{
-\item \code{GPara.txt} contains 2K-1 vectors: the first K vectors are vectors
-of the experts, the remain are vectors of the gating network.
-\item \code{GLOG.txt} the penalized log-likelihood value.
-\item \code{GBIC.txt} the value of BIC.
-\item \code{GMAXP.txt} the gating network's values for each observation.
-\item \code{GSigma.txt} the value of sigma.
-\item \code{GRestore data.txt} contains the input data and the classification
-class (the last column) for each observation.
-}
+GaussRMoE returns an object of class \link{GRMoE}.
 }
 \description{
 This function provides a penalized MLE for the regularized Mixture of Experts
 (MoE) model corresponding with the penalty parameters Lambda, Gamma.
+}
+\seealso{
+\link{GRMoE}
 }

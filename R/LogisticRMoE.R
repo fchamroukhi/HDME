@@ -11,18 +11,8 @@
 #' @param Gamma Penalty value for the gating network.
 #' @param option `option = 1`: using proximal Newton-type method;
 #'   `option = 0`: using proximal Newton method.
-#' @return A list with the following objects.
-#' \itemize{
-#'   \item `LPara.txt` contains K(R-1)+(K-1) vectors: the first K*(R-1)
-#'     vectors are vectors of the experts, the remain are vectors of the
-#'     gating network.
-#'   \item `LLOG.txt` the penalized log-likelihood value.
-#'   \item `LBIC.txt` the value of BIC.
-#'   \item `LMAXP.txt` the gating network's values for each observation.
-#'   \item `GSigma.txt` the value of sigma.
-#'   \item `LRestore data.txt` contains the input data and the classification
-#'     class (the last column) for each observation.
-#' }
+#' @return LogisticRMoE returns an object of class [LRMoE][LRMoE].
+#' @seealso [LRMoE]
 #' @export
 LogisticRMoE = function(Xmat, Ymat, K, Lambda, Gamma, option)
 {
@@ -151,6 +141,15 @@ on.exit(parallel::stopCluster(cl))
 #      xlab="MEDV/sd(MEDV)", ylab = "Density",
 #      border="black",col="green",prob=TRUE)
 # lines(density(Y))
-LWRITERES(MAXeta, MAXwk, MAXLOG, MAXBIC, Y, X, K, R, n)
-return()
+
+###
+# LWRITERES(MAXeta, MAXwk, MAXLOG, MAXBIC, Y, X, K, R, n)
+###
+
+model <- LRMoE(X = X, Y = Y, K = K, Lambda = Lambda, Gamma = Gamma,
+              wk = wk, eta = eta, loglik = L2,
+              storedloglik = Arr, BIC = BIC)
+
+return(model)
+
 }

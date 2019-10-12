@@ -8,19 +8,10 @@
 #' @param K Number of expert classes.
 #' @param Lambda Penalty value for the expert part.
 #' @param Gamma Penalty value for the gating network.
-#' @param option `option = 1`: using proximal Newton-type method;
-#'   `option = 0`: using proximal Newton method.
-#' @return A list with the following objects.
-#' \itemize{
-#'   \item `GPara.txt` contains 2K-1 vectors: the first K vectors are vectors
-#'     of the experts, the remain are vectors of the gating network.
-#'   \item `GLOG.txt` the penalized log-likelihood value.
-#'   \item `GBIC.txt` the value of BIC.
-#'   \item `GMAXP.txt` the gating network's values for each observation.
-#'   \item `GSigma.txt` the value of sigma.
-#'   \item `GRestore data.txt` contains the input data and the classification
-#'     class (the last column) for each observation.
-#' }
+#' @param option `option = 1`: using proximal Newton-type method; `option = 0`:
+#'   using proximal Newton method.
+#' @return GaussRMoE returns an object of class [GRMoE][GRMoE].
+#' @seealso [GRMoE]
 #' @export
 GaussRMoE = function(Xm, Ym, K, Lambda, Gamma, option)
 {
@@ -148,6 +139,15 @@ on.exit(parallel::stopCluster(cl))
 #      xlab="MEDV/sd(MEDV)", ylab = "Density",
 #      border="black",col="green",prob=TRUE)
 # lines(density(Y))
-GWRITERES(MAXbetak, MAXwk, MAXS, MAXLOG, MAXBIC, Y, X, K)
-return()
+
+###
+# GWRITERES(MAXbetak, MAXwk, MAXS, MAXLOG, MAXBIC, Y, X, K)
+###
+
+model <- GRMoE(X = X, Y = Y, K = K, Lambda = Lambda, Gamma = Gamma,
+                      wk = wk, betak = betak, sigma = S, loglik = L2,
+                      storedloglik = Arr, BIC = BIC)
+
+return(model)
+
 }

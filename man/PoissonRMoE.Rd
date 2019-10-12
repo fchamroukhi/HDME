@@ -28,13 +28,17 @@ of the experts, the remain are vectors of the gating network.
 \item \code{PLOG.txt} the penalized log-likelihood value.
 \item \code{PBIC.txt} the value of BIC.
 \item \code{PMAXP.txt} the gating network's values for each observation.
-\item \code{GSigma.txt} the value of sigma.
 \item \code{PRestore data.txt} contains the input data and the classification
 class (the last column) for each observation.
 }
+
+PoissonRMoE returns an object of class \link{PRMoE}.
 }
 \description{
 This function provides a penalized MLE for the Poisson regularized Mixture
 of Experts (MoE) model corresponding with the penalty parameters Lambda,
 Gamma.
+}
+\seealso{
+\link{PRMoE}
 }

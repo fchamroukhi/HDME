@@ -21,21 +21,13 @@ LogisticRMoE(Xmat, Ymat, K, Lambda, Gamma, option)
 \code{option = 0}: using proximal Newton method.}
 }
 \value{
-A list with the following objects.
-\itemize{
-\item \code{LPara.txt} contains K(R-1)+(K-1) vectors: the first K*(R-1)
-vectors are vectors of the experts, the remain are vectors of the
-gating network.
-\item \code{LLOG.txt} the penalized log-likelihood value.
-\item \code{LBIC.txt} the value of BIC.
-\item \code{LMAXP.txt} the gating network's values for each observation.
-\item \code{GSigma.txt} the value of sigma.
-\item \code{LRestore data.txt} contains the input data and the classification
-class (the last column) for each observation.
-}
+LogisticRMoE returns an object of class \link{LRMoE}.
 }
 \description{
 This function provides a penalized MLE for the logistic regularized Mixture
 of Experts (MoE) model corresponding with the penalty parameters Lambda,
 Gamma.
+}
+\seealso{
+\link{LRMoE}
 }
