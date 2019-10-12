@@ -8,12 +8,14 @@
 #' @param K Number of expert classes.
 #' @param Lambda Penalty value for the expert part.
 #' @param Gamma Penalty value for the gating network.
-#' @param option `option = 1`: using proximal Newton-type method; `option = 0`:
-#'   using proximal Newton method.
+#' @param option Optional. `option = TRUE`: using proximal Newton-type method;
+#'   `option = FALSE`: using proximal Newton method.
+#' @param verbose Optional. A logical value indicating whether or not values of
+#'   the log-likelihood should be printed during EM iterations.
 #' @return GaussRMoE returns an object of class [GRMoE][GRMoE].
 #' @seealso [GRMoE]
 #' @export
-GaussRMoE = function(Xm, Ym, K, Lambda, Gamma, option)
+GaussRMoE = function(Xm, Ym, K, Lambda, Gamma, option = FALSE, verbose = FALSE)
 {
 # library(plot3D)
 # library(stats)
@@ -71,13 +73,21 @@ tau = matrix(rep(0,n*K), ncol=K)
 L2 = GLOG(X, Y, wk, betak, S, lambda, gamma, 0)
 step = 1
 arr[step] = L2
-print(paste("Step:", step))
-print("betak:")
-print(betak)
-print("wk: ")
-print(wk)
-print(paste("Sigma: ", sqrt(S)))
-print(paste("LOG: ", L2))
+
+###
+# print(paste("Step:", step))
+# print("betak:")
+# print(betak)
+# print("wk: ")
+# print(wk)
+# print(paste("Sigma: ", sqrt(S)))
+# print(paste("LOG: ", L2))
+
+if (verbose) {
+  message("EM - GRMoE: Iteration: ", step, " | log-likelihood: "  , L2)
+}
+###
+
 repeat
 {
   step =step+1
@@ -87,38 +97,68 @@ repeat
   # pik = do.call(rbind,para[1])
   # betak = do.call(rbind,para[2])
   betak = Gpm.step(tau, X, Y, d, K, S, lambda, betak, cl)
-  wk = CoorGateP(X, wk, tau, gamma, 0)
+
+  ###
+  # wk = CoorGateP(X, wk, tau, gamma, 0)
+
+  if (option) {
+    wk = CoorGateP1(X, wk, tau, gamma, rho)
+  } else {
+    wk = CoorGateP(X, wk, tau, gamma, rho)
+  }
+  ###
+
   tau = Ge.step(betak, wk, S, Y, X, K)
   S = sm.step(tau, X, Y, K, betak)
   L2 = GLOG(X, Y, wk, betak, S, lambda, gamma, 0)
   #ZeroCoeff(betak, d, K, step, ZMat)
   arr[step] = L2
-  print(paste("Step:", step))
-  print("betak:")
-  print(betak)
-  print("wk: ")
-  print(wk)
-  print(paste("Sigma: ", sqrt(S)))
-  print(paste("LOG: ", L2))
+
+  ###
+  # print(paste("Step:", step))
+  # print("betak:")
+  # print(betak)
+  # print("wk: ")
+  # print(wk)
+  # print(paste("Sigma: ", sqrt(S)))
+  # print(paste("LOG: ", L2))
+
+  if (verbose) {
+    message("EM - GRMoE: Iteration: ", step, " | log-likelihood: "  , L2)
+  }
+  ###
+
   if((L2-L1)/abs(L1) < eps) break
 }
-print(paste("Number of steps: ", step))
-print(paste("betak: "))
-print(betak)
-print("wk: ")
-print(wk)
-print(paste("Sigma: ", sqrt(S)))
-print(paste("LOG value: ", L2))
+
+###
+# print(paste("Number of steps: ", step))
+# print(paste("betak: "))
+# print(betak)
+# print("wk: ")
+# print(wk)
+# print(paste("Sigma: ", sqrt(S)))
+# print(paste("LOG value: ", L2))
+###
+
 Step = seq.int(1, step)
 Arr = c(rep(0, step))
 #===========The BIC value
 BIC = GBIC(X, Y, wk, betak, S)
-print(paste("BIC: ", BIC))
+
+###
+# print(paste("BIC: ", BIC))
+###
+
 for(i in 1:step)
 {
   Arr[i]=arr[i]
 }
-print(Arr)
+
+###
+# print(Arr)
+###
+
 #if(L2 > MAXLOG)
 {
   MAXbetak <- betak

@@ -9,22 +9,14 @@
 #' @param K Number of expert classes.
 #' @param Lambda Penalty value for the expert part.
 #' @param Gamma Penalty value for the gating network.
-#' @param option `option = 1`: using proximal Newton-type method;
-#'   `option = 0`: using proximal Newton method.
-#' @return A list with the following objects.
-#' \itemize{
-#'   \item `PPara.txt` contains 2K-1 vectors: the first K vectors are vectors
-#'     of the experts, the remain are vectors of the gating network.
-#'   \item `PLOG.txt` the penalized log-likelihood value.
-#'   \item `PBIC.txt` the value of BIC.
-#'   \item `PMAXP.txt` the gating network's values for each observation.
-#'   \item `PRestore data.txt` contains the input data and the classification
-#'     class (the last column) for each observation.
-#' }
+#' @param option Optional. `option = TRUE`: using proximal Newton-type method;
+#'   `option = FALSE`: using proximal Newton method.
+#' @param verbose Optional. A logical value indicating whether or not values of
+#'   the log-likelihood should be printed during EM iterations.
 #' @return PoissonRMoE returns an object of class [PRMoE][PRMoE].
 #' @seealso [PRMoE]
 #' @export
-PoissonRMoE = function(Xmat, Ymat, K, Lambda, Gamma, option)
+PoissonRMoE = function(Xmat, Ymat, K, Lambda, Gamma, option = FALSE, verbose = TRUE)
 {
 # library(plot3D)
 # library(stats)
@@ -85,12 +77,20 @@ for(runstep in 1:N)
   }
   step = 1
   arr[step] = L2
-  print(paste("Step:", step))
-  print("betak:")
-  print(betak)
-  print("wk: ")
-  print(wk)
-  print(paste("LOG: ", L2))
+
+  ###
+  # print(paste("Step:", step))
+  # print("betak:")
+  # print(betak)
+  # print("wk: ")
+  # print(wk)
+  # print(paste("LOG: ", L2))
+
+  if (verbose) {
+    message("EM - PRMoE: Iteration: ", step, " | log-likelihood: "  , L2)
+  }
+  ###
+
   repeat
   {
     step =step+1
@@ -98,34 +98,64 @@ for(runstep in 1:N)
     #----------E-step
     tau = Pe.step(betak, wk, Y, X, K)
     #----------M-step
-    wk = CoorGateP(X, wk, tau, gamma, rho)
+
+    ###
+    # wk = CoorGateP(X, wk, tau, gamma, rho)
+
+    if (option) {
+      wk = CoorGateP1(X, wk, tau, gamma, rho)
+    } else {
+      wk = CoorGateP(X, wk, tau, gamma, rho)
+    }
+    ###
+
     betak = Ppm.step(tau, X, Y, K, lambda, betak, cl)
     L2 = PLOG(X, Y, wk, betak, lambda, gamma, rho)
     #ZeroCoeff(betak, d, K, step, ZMat)
     arr[step] = L2
-    print(paste("Step:", step))
-    print("betak:")
-    print(betak)
-    print("wk: ")
-    print(wk)
-    print(paste("LOG: ", L2))
+
+    ###
+    # print(paste("Step:", step))
+    # print("betak:")
+    # print(betak)
+    # print("wk: ")
+    # print(wk)
+    # print(paste("LOG: ", L2))
+
+    if (verbose) {
+      message("EM - LRMoE: Iteration: ", step, " | log-likelihood: "  , L2)
+    }
+    ###
+
     if((L2-L1)/abs(L1) < eps) break
   }
-  print(paste("Number of steps: ", step))
-  print(paste("betak: "))
-  print(betak)
-  print("wk: ")
-  print(wk)
-  print(paste("LOG value: ", L2))
+
+  ###
+  # print(paste("Number of steps: ", step))
+  # print(paste("betak: "))
+  # print(betak)
+  # print("wk: ")
+  # print(wk)
+  # print(paste("LOG value: ", L2))
+  ###
+
   BIC = PBIC(X, Y, wk, betak)
-  print(paste("BIC: ", BIC))
+
+  ###
+  # print(paste("BIC: ", BIC))
+  ###
+
   Step = seq.int(1, step)
   Arr = c(rep(0, step))
   for(i in 1:step)
   {
     Arr[i]=arr[i]
   }
-  print(Arr)
+
+  ###
+  # print(Arr)
+  ###
+
   #===============Plot Zero Coefficient============
   #U = t(ZMat)
   #U = t(U[,c(1:step)])

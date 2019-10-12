@@ -4,7 +4,7 @@
 \alias{GaussRMoE}
 \title{Penalized MLE for the regularized Mixture of Experts.}
 \usage{
-GaussRMoE(Xm, Ym, K, Lambda, Gamma, option)
+GaussRMoE(Xm, Ym, K, Lambda, Gamma, option = FALSE, verbose = FALSE)
 }
 \arguments{
 \item{Xm}{The matrix data for the input.}
@@ -17,8 +17,11 @@ GaussRMoE(Xm, Ym, K, Lambda, Gamma, option)
 
 \item{Gamma}{Penalty value for the gating network.}
 
-\item{option}{\code{option = 1}: using proximal Newton-type method; \code{option = 0}:
-using proximal Newton method.}
+\item{option}{Optional. \code{option = TRUE}: using proximal Newton-type method;
+\code{option = FALSE}: using proximal Newton method.}
+
+\item{verbose}{Optional. A logical value indicating whether or not values of
+the log-likelihood should be printed during EM iterations.}
 }
 \value{
 GaussRMoE returns an object of class \link{GRMoE}.

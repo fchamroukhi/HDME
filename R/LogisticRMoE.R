@@ -9,12 +9,14 @@
 #' @param K Number of expert classes.
 #' @param Lambda Penalty value for the expert part.
 #' @param Gamma Penalty value for the gating network.
-#' @param option `option = 1`: using proximal Newton-type method;
-#'   `option = 0`: using proximal Newton method.
+#' @param option Optional. `option = TRUE`: using proximal Newton-type method;
+#'   `option = FALSE`: using proximal Newton method.
+#' @param verbose Optional. A logical value indicating whether or not values of
+#'   the log-likelihood should be printed during EM iterations.
 #' @return LogisticRMoE returns an object of class [LRMoE][LRMoE].
 #' @seealso [LRMoE]
 #' @export
-LogisticRMoE = function(Xmat, Ymat, K, Lambda, Gamma, option)
+LogisticRMoE = function(Xmat, Ymat, K, Lambda, Gamma, option = FALSE, verbose = FALSE)
 {
 # option = 1: proximal Newton-type, 0: proximal Newton
 # library(plot3D)
@@ -73,12 +75,20 @@ tau <- matrix(rep(0,n*K), ncol=K)
 L2 = LLOG(X, Y, wk, eta, lambda, gamma, rho)
 step = 1
 arr[step] = L2
-print(paste("Step:", step))
-print("Eta:")
-for(k in 1:K) print(eta[k,,])
-print("wk: ")
-print(wk)
-print(paste("LOG: ", L2))
+
+###
+# print(paste("Step:", step))
+# print("Eta:")
+# for(k in 1:K) print(eta[k,,])
+# print("wk: ")
+# print(wk)
+# print(paste("LOG: ", L2))
+
+if (verbose) {
+  message("EM - LRMoE: Iteration: ", step, " | log-likelihood: "  , L2)
+}
+###
+
 BEGIN = Sys.time()
 repeat
 {
@@ -87,38 +97,72 @@ repeat
   #---------E-step
   tau = Le.step(eta, wk, Y, X, K, R)
   #---------M-step
-  wk = CoorGateP(X, wk, tau, gamma, rho)
+
+  ###
+  # wk = CoorGateP(X, wk, tau, gamma, rho)
+
+  if (option) {
+    wk = CoorGateP1(X, wk, tau, gamma, rho)
+  } else {
+    wk = CoorGateP(X, wk, tau, gamma, rho)
+  }
+  ###
+
   eta = Lpm.step(X, Y, U, R, eta, tau, lambda, cl, option)
   L2 = LLOG(X, Y, wk, eta, lambda, gamma, rho)
   #ZeroCoeff(betak, d, K, step, ZMat)
   arr[step] = L2
-  print(paste("Step:", step))
-  print("Beta:")
-  for(k in 1:K) print(eta[k,,])
-  print("wk: ")
-  print(wk)
-  print(paste("LOG: ", L2))
+
+  ###
+  # print(paste("Step:", step))
+  # print("Beta:")
+  # for(k in 1:K) print(eta[k,,])
+  # print("wk: ")
+  # print(wk)
+  # print(paste("LOG: ", L2))
+
+  if (verbose) {
+    message("EM - LRMoE: Iteration: ", step, " | log-likelihood: "  , L2)
+  }
+  ###
+
   if((L2-L1) < eps) break
 }
-print(paste("Number of steps: ", step))
-print(paste("Step:", step))
-print("Eta:")
-for(k in 1:K) print(eta[k,,])
-print("wk: ")
-print(wk)
-print(paste("LOG value: ", L2))
+
+###
+# print(paste("Number of steps: ", step))
+# print(paste("Step:", step))
+# print("Eta:")
+# for(k in 1:K) print(eta[k,,])
+# print("wk: ")
+# print(wk)
+# print(paste("LOG value: ", L2))
+###
+
 BIC = LBIC(X, Y, wk, eta)
-print(paste("BIC value: ", BIC))
+
+###
+# print(paste("BIC value: ", BIC))
+###
+
 Step = seq.int(1, step)
 Arr = c(rep(0, step))
 for(i in 1:step)
 {
   Arr[i]=arr[i]
 }
-print(Arr)
+
+###
+# print(Arr)
+###
+
 END = Sys.time()
 time = END - BEGIN
-print(paste("Time: ", time))
+
+###
+# print(paste("Time: ", time))
+###
+
 #if(L2 > MAXLOG)
 {
   MAXeta <- eta

@@ -1,9 +1,10 @@
-CoorGateP = function(X, wk, tau, Gamma, rho)
+CoorGateP1 = function(X, wk, tau, Gamma, rho)
 { #using proximal Newton-type
   # source("Fs.R")
   # source("CoorLQk.R")
   # source("Pik.R")
-  #n = dim(X)[1]
+  n = dim(X)[1]
+  K = ncol(tau)
   P_k = c(rep(0,n))
   d_k = c(rep(1/4,n))
   c_k = c(rep(0,n))

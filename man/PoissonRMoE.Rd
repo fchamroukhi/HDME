@@ -4,7 +4,8 @@
 \alias{PoissonRMoE}
 \title{Penalized MLE for the Poisson regularized Mixture of Experts.}
 \usage{
-PoissonRMoE(Xmat, Ymat, K, Lambda, Gamma, option)
+PoissonRMoE(Xmat, Ymat, K, Lambda, Gamma, option = FALSE,
+  verbose = TRUE)
 }
 \arguments{
 \item{Xmat}{The matrix data for the input.}
@@ -17,21 +18,13 @@ PoissonRMoE(Xmat, Ymat, K, Lambda, Gamma, option)
 
 \item{Gamma}{Penalty value for the gating network.}
 
-\item{option}{\code{option = 1}: using proximal Newton-type method;
-\code{option = 0}: using proximal Newton method.}
+\item{option}{Optional. \code{option = TRUE}: using proximal Newton-type method;
+\code{option = FALSE}: using proximal Newton method.}
+
+\item{verbose}{Optional. A logical value indicating whether or not values of
+the log-likelihood should be printed during EM iterations.}
 }
 \value{
-A list with the following objects.
-\itemize{
-\item \code{PPara.txt} contains 2K-1 vectors: the first K vectors are vectors
-of the experts, the remain are vectors of the gating network.
-\item \code{PLOG.txt} the penalized log-likelihood value.
-\item \code{PBIC.txt} the value of BIC.
-\item \code{PMAXP.txt} the gating network's values for each observation.
-\item \code{PRestore data.txt} contains the input data and the classification
-class (the last column) for each observation.
-}
-
 PoissonRMoE returns an object of class \link{PRMoE}.
 }
 \description{

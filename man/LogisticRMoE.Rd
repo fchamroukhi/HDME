@@ -4,7 +4,8 @@
 \alias{LogisticRMoE}
 \title{Penalized MLE for the logistic regularized Mixture of Experts.}
 \usage{
-LogisticRMoE(Xmat, Ymat, K, Lambda, Gamma, option)
+LogisticRMoE(Xmat, Ymat, K, Lambda, Gamma, option = FALSE,
+  verbose = FALSE)
 }
 \arguments{
 \item{Xmat}{The matrix data for the input.}
@@ -17,8 +18,11 @@ LogisticRMoE(Xmat, Ymat, K, Lambda, Gamma, option)
 
 \item{Gamma}{Penalty value for the gating network.}
 
-\item{option}{\code{option = 1}: using proximal Newton-type method;
-\code{option = 0}: using proximal Newton method.}
+\item{option}{Optional. \code{option = TRUE}: using proximal Newton-type method;
+\code{option = FALSE}: using proximal Newton method.}
+
+\item{verbose}{Optional. A logical value indicating whether or not values of
+the log-likelihood should be printed during EM iterations.}
 }
 \value{
 LogisticRMoE returns an object of class \link{LRMoE}.
