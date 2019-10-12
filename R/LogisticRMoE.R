@@ -1,3 +1,29 @@
+#' Penalized MLE for the logistic regularized Mixture of Experts.
+#'
+#' This function provides a penalized MLE for the logistic regularized Mixture
+#' of Experts (MoE) model corresponding with the penalty parameters Lambda,
+#' Gamma.
+#'
+#' @param Xmat The matrix data for the input.
+#' @param Ymat Vector of the response variable.
+#' @param K Number of expert classes.
+#' @param Lambda Penalty value for the expert part.
+#' @param Gamma Penalty value for the gating network.
+#' @param option `option = 1`: using proximal Newton-type method;
+#'   `option = 0`: using proximal Newton method.
+#' @return A list with the following objects.
+#' \itemize{
+#'   \item `LPara.txt` contains K(R-1)+(K-1) vectors: the first K*(R-1)
+#'     vectors are vectors of the experts, the remain are vectors of the
+#'     gating network.
+#'   \item `LLOG.txt` the penalized log-likelihood value.
+#'   \item `LBIC.txt` the value of BIC.
+#'   \item `LMAXP.txt` the gating network's values for each observation.
+#'   \item `GSigma.txt` the value of sigma.
+#'   \item `LRestore data.txt` contains the input data and the classification
+#'     class (the last column) for each observation.
+#' }
+#' @export
 LogisticRMoE = function(Xmat, Ymat, K, Lambda, Gamma, option)
 {
 # option = 1: proximal Newton-type, 0: proximal Newton

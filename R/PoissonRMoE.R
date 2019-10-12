@@ -1,3 +1,28 @@
+#' Penalized MLE for the Poisson regularized Mixture of Experts.
+#'
+#' This function provides a penalized MLE for the Poisson regularized Mixture
+#' of Experts (MoE) model corresponding with the penalty parameters Lambda,
+#' Gamma.
+#'
+#' @param Xmat The matrix data for the input.
+#' @param Ymat Vector of the response variable.
+#' @param K Number of expert classes.
+#' @param Lambda Penalty value for the expert part.
+#' @param Gamma Penalty value for the gating network.
+#' @param option `option = 1`: using proximal Newton-type method;
+#'   `option = 0`: using proximal Newton method.
+#' @return A list with the following objects.
+#' \itemize{
+#'   \item `PPara.txt` contains 2K-1 vectors: the first K vectors are vectors
+#'     of the experts, the remain are vectors of the gating network.
+#'   \item `PLOG.txt` the penalized log-likelihood value.
+#'   \item `PBIC.txt` the value of BIC.
+#'   \item `PMAXP.txt` the gating network's values for each observation.
+#'   \item `GSigma.txt` the value of sigma.
+#'   \item `PRestore data.txt` contains the input data and the classification
+#'     class (the last column) for each observation.
+#' }
+#' @export
 PoissonRMoE = function(Xmat, Ymat, K, Lambda, Gamma, option)
 {
 # library(plot3D)
