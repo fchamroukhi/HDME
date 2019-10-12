@@ -3,6 +3,7 @@ Fs = function(X, tau, gamma, rho, wk)
   # source("Pik.R")
   n = dim(X)[1]
   d = dim(X)[2]
+  K = ncol(tau)
   PI = matrix(rep(0, n*K), ncol=K)
   PI = Pik(n, K, X, wk)
   logPi = log(PI)

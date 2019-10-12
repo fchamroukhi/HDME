@@ -3,6 +3,8 @@ GLOG = function(X, Y, wk, betak, S, lambda, gamma, rho)
 {
   # source("Pik.R")
   #Do for dim X > 2 to tranlate beta into matrix
+  n = dim(X)[1]
+  K = nrow(wk) + 1
   pik = Pik(n, K, X, wk)
   beta = abs(betak[-1,])
   wPen = abs(wk[,-1]) #remove first column of wk
@@ -25,13 +27,13 @@ GLOG = function(X, Y, wk, betak, S, lambda, gamma, rho)
   #   S1 = 0
   #   for(k in 1:K)
   #   {
-  #     S1 = S1+pik[i,k]*dnorm(Y[i],X[i,]%*%as.matrix(betak[,k]),sqrt(S))
+  #     S1 = S1+pik[i,k]*stats::dnorm(Y[i],X[i,]%*%as.matrix(betak[,k]),sqrt(S))
   #   }
   #   S1 = log(S1)
   #   S0 = S0+S1
   # }
   mu = X%*%betak
-  tau = pik*dnorm(Y, mu, sqrt(S))
+  tau = pik*stats::dnorm(Y, mu, sqrt(S))
   S = log(rowSums(tau))
   S0 = sum(S)
   S0 = S0 - Pen - Pen1 - Pen2

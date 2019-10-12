@@ -4,6 +4,7 @@ GBIC = function(X, Y, wk, betak, S)
   # source("Pik.R")
   p = dim(X)[2]-1
   n = dim(X)[1]
+  K = nrow(wk) + 1
   pik = Pik(n, K, X, wk)
   beta = as.matrix(betak[-1,]) #remove first row of betak
   if(p==1) beta = t(beta)
@@ -28,13 +29,13 @@ GBIC = function(X, Y, wk, betak, S)
   #   S1 = 0
   #   for(k in 1:K)
   #   {
-  #     S1 = S1+pik[i,k]*dnorm(Y[i],X[i,]%*%as.matrix(betak[,k]),sqrt(S))
+  #     S1 = S1+pik[i,k]*stats::dnorm(Y[i],X[i,]%*%as.matrix(betak[,k]),sqrt(S))
   #   }
   #   S1 = log(S1)
   #   S0 = S0+S1
   # }
   mu = X%*%betak
-  tau = pik*dnorm(Y, mu, sqrt(S))
+  tau = pik*stats::dnorm(Y, mu, sqrt(S))
   S = log(rowSums(tau))
   S0 = sum(S)
   S0 = S0 - log(n)*DF/2

@@ -2,8 +2,8 @@
 Pe.step = function(betak, wk, Y, X, K)
 {
   # source("Pik.R")
+  n = dim(X)[1]
   tau = matrix(rep(0,n*K), ncol=K)
-  #n = dim(X)[1]
   pik = Pik(n, K, X, wk)
 #----------------OLD E-step
   # for (i in 1:n)
@@ -12,7 +12,7 @@ Pe.step = function(betak, wk, Y, X, K)
   #   {
   #     mu = X[i,]%*%as.matrix(betak[,k])
   #     Lam = exp(mu)
-  #     tau[i,k] = pik[i,k]*dpois(Y[i],Lam)
+  #     tau[i,k] = pik[i,k]*stats::dpois(Y[i],Lam)
   #     #print(tau[i,k])
   #     Sum = Sum + tau[i,k]
   #   }
@@ -20,7 +20,7 @@ Pe.step = function(betak, wk, Y, X, K)
   # }
 #---------------NEW E-step
   Lam = exp(X%*%betak)
-  tau = pik*dpois(Y, Lam)
+  tau = pik*stats::dpois(Y, Lam)
   Sum = rowSums(tau)
   tau = tau/Sum
 

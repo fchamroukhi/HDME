@@ -4,6 +4,7 @@ PBIC = function(X, Y, wk, betak)
   # source("Pik.R")
   p = dim(X)[2]-1
   n = dim(X)[1]
+  K = nrow(wk) + 1
   pik = Pik(n, K, X, wk)
   beta = as.matrix(betak[-1,]) #remove first row of betak
   if(p==1) beta = t(beta)
@@ -30,13 +31,13 @@ PBIC = function(X, Y, wk, betak)
   #   {
   #     Lambda = exp(X[i,]%*%as.matrix(betak[,k]))
   #     #print(Lambda)
-  #     S1 = S1+pik[i,k]*dpois(Y[i], Lambda)
+  #     S1 = S1+pik[i,k]*stats::dpois(Y[i], Lambda)
   #   }
   #   S1 = log(S1)
   #   S0 = S0+S1
   # }
   Lam = exp(X%*%betak)
-  tau = pik*dpois(Y, Lam)
+  tau = pik*stats::dpois(Y, Lam)
   S = log(rowSums(tau))
   S0 = sum(S)
   S0 = S0 - log(n)*DF/2

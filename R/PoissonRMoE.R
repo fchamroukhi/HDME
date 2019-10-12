@@ -34,18 +34,18 @@ PoissonRMoE = function(Xmat, Ymat, K, Lambda, Gamma, option)
 # library(foreach)
 #setDefaultCluster(makePSOCKcluster(K))
 #=========Parallel==============
-cl = makeCluster(K)
-registerDoParallel(cl)
-getDoParWorkers()
+cl = parallel::makeCluster(K)
+doParallel::registerDoParallel(cl)
+foreach::getDoParWorkers()
 #===============================
-X <<-Xmat
-Y<<-Ymat
-n <<- dim(X)[1]
-d <<- dim(X)[2]
+X <-Xmat
+Y<-Ymat
+n <- dim(X)[1]
+d <- dim(X)[2]
 #MAXLOG = -10^6
 #rho = 0.1*log(n)
 #================Penalty parameters for bike (20-2)
-lambda <<- c(rep(Lambda,K))
+lambda <- c(rep(Lambda,K))
 gamma = c(rep(Gamma,K-1))
 rho = 0
 #===================
@@ -55,14 +55,14 @@ for(runstep in 1:N)
 {
   Nstep = 500
   arr = c(rep(0, Nstep))
-  ZMat <<- matrix(rep(0, Nstep*K), ncol=K)
+  ZMat <- matrix(rep(0, Nstep*K), ncol=K)
   eps = 1e-5
   d = dim(X)[2] #dim of X: d = p+1
   wk = matrix(rep(0,(K-1)*d), ncol = d)
-  betak <<- matrix(rep(0,K*d), ncol = K)
+  betak <- matrix(rep(0,K*d), ncol = K)
 #===========Generated Beta for the experts
   # source("PInitial.R")
-  # #for(k in 1:K)  betak[,k] = runif(d,-2,2)
+  # #for(k in 1:K)  betak[,k] = stats::runif(d,-2,2)
   # #------------------------
   # source("PEstep.R")
   # source("PPMstep.R") #Programing in parallel
@@ -75,7 +75,7 @@ for(runstep in 1:N)
   # #source("Plot.R")
   # source("PWrite.R")
   #----------------------
-  tau <<- matrix(rep(0,n*K), ncol=K)
+  tau <- matrix(rep(0,n*K), ncol=K)
   repeat{
   betak = Initial(X, Y, d, K)
   L2 = PLOG(X, Y, wk, betak, lambda, gamma, rho)
@@ -132,10 +132,10 @@ for(runstep in 1:N)
   #==========Update MAX===============
   #if(L2 > MAXLOG)
   {
-    MAXbetak <<- betak
-    MAXwk <<- wk
-    MAXLOG <<- L2
-    MAXBIC <<-BIC
+    MAXbetak <- betak
+    MAXwk <- wk
+    MAXLOG <- L2
+    MAXBIC <-BIC
   }
   LOGarr[runstep] = L2
 }
@@ -150,7 +150,7 @@ for(runstep in 1:N)
 # NPlog = NPLOG(X, Y, MAXwk, MAXbetak)
 # print(paste("MAX NPLOG: ", NPlog))
 #==============Plot Log-likelihood value========
-matplot(Step, Arr, col = "blue",type="o",pch=19,xlab = 'Step', ylab = 'Log-likelihood')
-on.exit(stopCluster(cl))
-PWRITERES()
+graphics::matplot(Step, Arr, col = "blue",type="o",pch=19,xlab = 'Step', ylab = 'Log-likelihood')
+on.exit(parallel::stopCluster(cl))
+PWRITERES(MAXbetak, MAXwk, MAXLOG, MAXBIC, Y, X, K)
 }

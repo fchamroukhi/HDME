@@ -2,8 +2,8 @@
 Ge.step = function(betak, wk, S, Y, X, K)
 {
   # source("Pik.R")
+  n = dim(X)[1]
   tau = matrix(rep(0,n*K), ncol=K)
-  #n = dim(X)[1]
   pik = Pik(n, K, X, wk)
   #--------------OLD E-Step
   # for (i in 1:n)
@@ -13,7 +13,7 @@ Ge.step = function(betak, wk, S, Y, X, K)
   #     mu = X[i,]%*%as.matrix(betak[,k])
   #     #ERROR: Too big Mean
   #     #print(paste("Mu: ", mu))
-  #     tau[i,k] = pik[i,k]*dnorm(Y[i],mu,sqrt(S))
+  #     tau[i,k] = pik[i,k]*stats::dnorm(Y[i],mu,sqrt(S))
   #     #print(tau[i,k])
   #     Sum = Sum + tau[i,k]
   #   }
@@ -21,7 +21,7 @@ Ge.step = function(betak, wk, S, Y, X, K)
   #}
   #--------------NEW E-Step
   mu = X%*%betak
-  tau = pik*dnorm(Y, mu, sqrt(S))
+  tau = pik*stats::dnorm(Y, mu, sqrt(S))
   Sum = rowSums(tau)
   tau = tau/Sum
   return (tau)

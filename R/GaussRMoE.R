@@ -33,17 +33,17 @@ GaussRMoE = function(Xm, Ym, K, Lambda, Gamma, option)
 # library(foreach)
 #setDefaultCluster(makePSOCKcluster(K))
 #=========Parallel==============
-cl = makeCluster(K)
-registerDoParallel(cl)
-getDoParWorkers()
+cl = parallel::makeCluster(K)
+doParallel::registerDoParallel(cl)
+foreach::getDoParWorkers()
 #MAXLOG = -10^6
-X <<- Xm
-Y <<- Ym
+X <- Xm
+Y <- Ym
 #================Penalty parameters for Housing Data
 # lambda = c(rep(42,K))
 # gamma = c(rep(10,K-1))
 #================Penalty parameters for RB Data and BB Data
-lambda <<- c(rep(Lambda,K))
+lambda <- c(rep(Lambda,K))
 gamma = c(rep(Gamma,K-1))
 #rho = 0.1*log(n)
 rho = 0
@@ -51,17 +51,17 @@ rho = 0
 pik = c(rep(0, K))
 Nstep = 5000
 arr = c(rep(0, Nstep))
-ZMat <<- matrix(rep(0, Nstep*K), ncol=K)
+ZMat <- matrix(rep(0, Nstep*K), ncol=K)
 eps = 1e-5
-d <<- dim(X)[2] #dim of X: d = p+1
-n <<- dim(X)[1]
-S <<- runif(1, min = 5, max = 20) #variance
+d <- dim(X)[2] #dim of X: d = p+1
+n <- dim(X)[1]
+S <- stats::runif(1, min = 5, max = 20) #variance
 wk = matrix(rep(0,(K-1)*d), ncol = d)
-betak <<- matrix(rep(0, d*K), ncol = K)
+betak <- matrix(rep(0, d*K), ncol = K)
 #Generated Beta
 for (k in 1:K)
 {
-  betak[,k] = runif(d,-5,5)
+  betak[,k] = stats::runif(d,-5,5)
 }
 #------------------------
 # source("GEstep.R")
@@ -130,24 +130,24 @@ for(i in 1:step)
 print(Arr)
 #if(L2 > MAXLOG)
 {
-  MAXbetak <<- betak
-  MAXS <<- S
-  MAXwk <<- wk
-  MAXLOG <<- L2
-  MAXBIC <<-BIC
+  MAXbetak <- betak
+  MAXS <- S
+  MAXwk <- wk
+  MAXLOG <- L2
+  MAXBIC <-BIC
 }
 #===============Plot Zero Coefficient============
 U = t(ZMat)
 U = t(U[,c(1:step)])
-matplot(U, type = c("o"), pch=19, col=1:K, xlab = 'Step', ylab = 'Number of Zero Coefficients')
+graphics::matplot(U, type = c("o"), pch=19, col=1:K, xlab = 'Step', ylab = 'Number of Zero Coefficients')
 #==============Plot Log-likelihood value========
-matplot(Step, Arr, col = "blue",type="o",pch=19,xlab = 'Step', ylab = 'Log-likelihood')
-on.exit(stopCluster(cl))
+graphics::matplot(Step, Arr, col = "blue",type="o",pch=19,xlab = 'Step', ylab = 'Log-likelihood')
+on.exit(parallel::stopCluster(cl))
 #==============Plot histogram of Y================
 # hist(Y, breaks = 15, main="Histogram for MEDV/sd(MEDV)",
 #      xlab="MEDV/sd(MEDV)", ylab = "Density",
 #      border="black",col="green",prob=TRUE)
 # lines(density(Y))
-GWRITERES()
+GWRITERES(MAXbetak, MAXwk, MAXS, MAXLOG, MAXBIC, Y, X, K)
 return()
 }

@@ -36,20 +36,20 @@ LogisticRMoE = function(Xmat, Ymat, K, Lambda, Gamma, option)
 # library(foreach)
 #setDefaultCluster(makePSOCKcluster(K))
 #=========Parallel==============
-cl = makeCluster(K)
-registerDoParallel(cl)
-getDoParWorkers()
+cl = parallel::makeCluster(K)
+doParallel::registerDoParallel(cl)
+foreach::getDoParWorkers()
 #==============================
-X <<- Xmat
-Y <<- Ymat
-n <<- dim(X)[1]
-d <<- dim(X)[2]
-R <<- max(Y)
+X <- Xmat
+Y <- Ymat
+n <- dim(X)[1]
+d <- dim(X)[2]
+R <- max(Y)
 #===============================
-lambda <<- matrix(rep(Lambda,(R-1)*K), ncol=(R-1))
+lambda <- matrix(rep(Lambda,(R-1)*K), ncol=(R-1))
 gamma = c(rep(Gamma,K-1))
 rho = 0
-U <<- matrix(rep(0,n*R), ncol=R)
+U <- matrix(rep(0,n*R), ncol=R)
 for (i in 1:n) U[i,Y[i]] = 1
 #MAXLOG = -10^6
 #===================
@@ -59,13 +59,13 @@ arr = c(rep(0, Nstep))
 ZMat = matrix(rep(0, Nstep*K), ncol=K)
 eps = 1e-4
 wk = matrix(rep(0,(K-1)*d), ncol = d)
-eta <<- array(0, dim = c(K,R-1,d))
+eta <- array(0, dim = c(K,R-1,d))
 #Generated eta
 for (k in 1:K)
 {
   for(r in 1:(R-1))
   {
-    eta[k,r,] = runif(d,-6,6)
+    eta[k,r,] = stats::runif(d,-6,6)
   }
 }
 #------------------------
@@ -79,7 +79,7 @@ for (k in 1:K)
 # #source("Plot.R")
 # source("LWrite.R")
 #----------------------
-tau <<- matrix(rep(0,n*K), ncol=K)
+tau <- matrix(rep(0,n*K), ncol=K)
 L2 = LLOG(X, Y, wk, eta, lambda, gamma, rho)
 step = 1
 arr[step] = L2
@@ -117,7 +117,7 @@ for(k in 1:K) print(eta[k,,])
 print("wk: ")
 print(wk)
 print(paste("LOG value: ", L2))
-BIC = LBIC(X, Y, wk, etak)
+BIC = LBIC(X, Y, wk, eta)
 print(paste("BIC value: ", BIC))
 Step = seq.int(1, step)
 Arr = c(rep(0, step))
@@ -131,10 +131,10 @@ time = END - BEGIN
 print(paste("Time: ", time))
 #if(L2 > MAXLOG)
 {
-  MAXeta <<- eta
-  MAXwk <<- wk
-  MAXLOG <<- L2
-  MAXBIC <<-BIC
+  MAXeta <- eta
+  MAXwk <- wk
+  MAXLOG <- L2
+  MAXBIC <- BIC
 }
 #===============Plot Zero Coefficient============ Need to FIX
 # U = t(ZMat)
@@ -144,13 +144,13 @@ print(paste("Time: ", time))
 #BIC = BIC(X, Y, wk, betak, S)
 #print(paste("BIC: ", BIC))
 #==============Plot Log-likelihood value========
-matplot(Step, Arr, col = "blue",type="o",pch=19,xlab = 'Step', ylab = 'Log-likelihood')
-on.exit(stopCluster(cl))
+graphics::matplot(Step, Arr, col = "blue",type="o",pch=19,xlab = 'Step', ylab = 'Log-likelihood')
+on.exit(parallel::stopCluster(cl))
 #==============Plot histogram of Y================
 # hist(Y, breaks = 15, main="Histogram for MEDV/sd(MEDV)",
 #      xlab="MEDV/sd(MEDV)", ylab = "Density",
 #      border="black",col="green",prob=TRUE)
 # lines(density(Y))
-LWRITERES()
+LWRITERES(MAXeta, MAXwk, MAXLOG, MAXBIC, Y, X, K, R, n)
 return()
 }

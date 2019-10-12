@@ -4,6 +4,9 @@ LLOG = function(X, Y, wk, eta, lambda, gamma, rho)
   # source("Pik.R")
   # source("LPi.R")
   #Do for dim X > 2 to tranlate beta into matrix
+  n = dim(X)[1]
+  K = nrow(wk) + 1
+  R = max(Y)
   pik = Pik(n, K, X, wk)
   wPen = abs(wk[,-1]) #remove first column of wk
   #d = dim(X)[2]

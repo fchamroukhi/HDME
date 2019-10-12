@@ -3,7 +3,8 @@ CoorGateP = function(X, wk, tau, Gamma, rho)
 # source("Fs.R")
 # source("CoorLQk.R")
 # source("Pik.R")
-#n = dim(X)[1]
+n = dim(X)[1]
+K = ncol(tau)
 P_k = c(rep(0,n))
 d_k = c(rep(0,n))
 c_k = c(rep(0,n))

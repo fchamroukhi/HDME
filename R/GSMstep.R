@@ -1,7 +1,7 @@
 #M-stepS
 sm.step = function(tau, X, Y, K, wk)
 {
-  #n = dim(X)[1]
+  n = dim(X)[1]
   S1 = 0
   for(k in 1:K)
   {

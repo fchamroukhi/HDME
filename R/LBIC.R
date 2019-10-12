@@ -1,11 +1,13 @@
 #BIC  function
-LBIC = function(X, Y, wk, etak)
+LBIC = function(X, Y, wk, eta)
 {
   # source("Pik.R")
   # source("LPi.R")
-  #d = dim(X)[2]
+  d = dim(X)[2]
   p = d-1
-  #n = dim(X)[1]
+  n = dim(X)[1]
+  K = nrow(wk) + 1
+  R = max(Y)
   pik = Pik(n, K, X, wk)
   # beta = as.matrix(betak[-1,]) #remove first row of betak
   # if(p==1) beta = t(beta)

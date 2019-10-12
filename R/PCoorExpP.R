@@ -1,4 +1,4 @@
-PCoorExpP = function(X, Y, betak, tau, lambda, k)
+PCoorExpP = function(X, Y, betak, tau, lambda, k, rho = 0)
 {
 #Input matrix betak and k (for parallel programing)
   # source("PQk.R")
