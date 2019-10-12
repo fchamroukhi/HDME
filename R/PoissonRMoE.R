@@ -181,7 +181,11 @@ for(runstep in 1:N)
 # NPlog = NPLOG(X, Y, MAXwk, MAXbetak)
 # print(paste("MAX NPLOG: ", NPlog))
 #==============Plot Log-likelihood value========
-graphics::matplot(Step, Arr, col = "blue",type="o",pch=19,xlab = 'Step', ylab = 'Log-likelihood')
+
+###
+# graphics::matplot(Step, Arr, col = "blue",type="o",pch=19,xlab = 'Step', ylab = 'Log-likelihood')
+###
+
 on.exit(parallel::stopCluster(cl))
 
 ###

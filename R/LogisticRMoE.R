@@ -178,7 +178,11 @@ time = END - BEGIN
 #BIC = BIC(X, Y, wk, betak, S)
 #print(paste("BIC: ", BIC))
 #==============Plot Log-likelihood value========
-graphics::matplot(Step, Arr, col = "blue",type="o",pch=19,xlab = 'Step', ylab = 'Log-likelihood')
+
+###
+# graphics::matplot(Step, Arr, col = "blue",type="o",pch=19,xlab = 'Step', ylab = 'Log-likelihood')
+###
+
 on.exit(parallel::stopCluster(cl))
 #==============Plot histogram of Y================
 # hist(Y, breaks = 15, main="Histogram for MEDV/sd(MEDV)",

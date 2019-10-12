@@ -44,4 +44,9 @@ each EM iteration.}
 \item{\code{BIC}}{Numeric. Value of BIC (Bayesian Information Criterion).}
 }}
 
+\section{Methods}{
+
+\describe{
+\item{\code{plot()}}{Plot method.}
+}}
 

@@ -66,6 +66,10 @@ PRMoE <- setRefClass(
     },
 
     plot = function() {
+      "Plot method."
+
+      # Log-likelihood
+      graphics::plot(1:length(storedloglik), storedloglik, col = "blue", type = "o", pch = 19, xlab = 'Step', ylab = 'Log-likelihood')
 
     }
   )

@@ -168,11 +168,15 @@ for(i in 1:step)
   MAXBIC <-BIC
 }
 #===============Plot Zero Coefficient============
-U = t(ZMat)
-U = t(U[,c(1:step)])
-graphics::matplot(U, type = c("o"), pch=19, col=1:K, xlab = 'Step', ylab = 'Number of Zero Coefficients')
+# U = t(ZMat)
+# U = t(U[,c(1:step)])
+# graphics::matplot(U, type = c("o"), pch=19, col=1:K, xlab = 'Step', ylab = 'Number of Zero Coefficients')
 #==============Plot Log-likelihood value========
-graphics::matplot(Step, Arr, col = "blue",type="o",pch=19,xlab = 'Step', ylab = 'Log-likelihood')
+
+###
+# graphics::matplot(Step, Arr, col = "blue",type="o",pch=19,xlab = 'Step', ylab = 'Log-likelihood')
+###
+
 on.exit(parallel::stopCluster(cl))
 #==============Plot histogram of Y================
 # hist(Y, breaks = 15, main="Histogram for MEDV/sd(MEDV)",
