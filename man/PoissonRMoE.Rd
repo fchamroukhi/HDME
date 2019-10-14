@@ -8,13 +8,17 @@ PoissonRMoE(Xmat, Ymat, K, Lambda, Gamma, option = FALSE,
   verbose = TRUE)
 }
 \arguments{
-\item{Xmat}{The matrix data for the input.}
+\item{Xmat}{Matrix of explanatory variables. Each feature should be
+standardized to have mean 0 and variance 1. One must add the column vector
+(1,1,...,1) for the intercept variable.}
 
-\item{Ymat}{Vector of the response variable.}
+\item{Ymat}{Vector of the response variable. For the Gaussian case Y should
+be standardized. For multi-logistic model Y is numbered from 1 to R (R is
+the number of labels of Y).}
 
-\item{K}{Number of expert classes.}
+\item{K}{Number of experts (K > 1).}
 
-\item{Lambda}{Penalty value for the expert part.}
+\item{Lambda}{Penalty value for the experts.}
 
 \item{Gamma}{Penalty value for the gating network.}
 

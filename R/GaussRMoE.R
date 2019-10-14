@@ -3,10 +3,14 @@
 #' This function provides a penalized MLE for the regularized Mixture of Experts
 #' (MoE) model corresponding with the penalty parameters Lambda, Gamma.
 #'
-#' @param Xm The matrix data for the input.
-#' @param Ym Vector of the response variable.
-#' @param K Number of expert classes.
-#' @param Lambda Penalty value for the expert part.
+#' @param Xm Matrix of explanatory variables. Each feature should be
+#'   standardized to have mean 0 and variance 1. One must add the column vector
+#'   (1,1,...,1) for the intercept variable.
+#' @param Ym Vector of the response variable. For the Gaussian case Y should
+#'   be standardized. For multi-logistic model Y is numbered from 1 to R (R is
+#'   the number of labels of Y).
+#' @param K Number of experts (K > 1).
+#' @param Lambda Penalty value for the experts.
 #' @param Gamma Penalty value for the gating network.
 #' @param option Optional. `option = TRUE`: using proximal Newton-type method;
 #'   `option = FALSE`: using proximal Newton method.
@@ -84,7 +88,7 @@ arr[step] = L2
 # print(paste("LOG: ", L2))
 
 if (verbose) {
-  message("EM - GRMoE: Iteration: ", step, " | log-likelihood: "  , L2)
+  message("EM - GRMoE: Iteration: ", step, " | log-likelihood: "  , round(x = L2, digits = 2))
 }
 ###
 
