@@ -1,0 +1,87 @@
+---
+title: "A-quick-tour-of-LRMoE"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{A-quick-tour-of-LRMoE}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(
+	fig.align = "center",
+	fig.height = 5.5,
+	fig.width = 6,
+	warning = FALSE,
+	collapse = TRUE,
+	dev.args = list(pointsize = 10),
+	out.width = "90%",
+	par = TRUE
+)
+knit_hooks$set(par = function(before, options, envir)
+  { if (before && options$fig.show != "none") 
+       par(family = "sans", mar = c(4.1,4.1,1.1,1.1), mgp = c(3,1,0), tcl = -0.5)
+})
+```
+
+```{r, message = FALSE, echo = FALSE}
+library(RMoE)
+```
+
+# Introduction
+
+**LRMoE** (Logistic Regularized Mixture-of-Experts) provides a penalized MLE 
+for the regularized Logistic Mixture of Experts. **LRMoE** consists of a mixture 
+of *K* Logistic expert regressors network) gated by a softmax gating network.
+
+It was written in R Markdown, using the [knitr](https://cran.r-project.org/package=knitr) 
+package for production.
+
+See `help(package="RMoE")` for further details.
+
+# Application to a simulated dataset
+
+## Load data
+
+```{r}
+data("logistic")
+X <- as.matrix(logistic[, -8])
+y <- logistic$V8
+```
+
+## Set up LRMoE model parameters
+
+```{r}
+K <- 2 # Number of experts
+Lambda <- 3
+Gamma <- 3
+opt <- FALSE # opt = FALSE: proximal Newton; opt = TRUE: proximal Newton-type
+```
+
+# Estimation
+
+```{r}
+lrmoe <- LogisticRMoE(Xmat = X, Ymat = y, K = K, Lambda = Lambda, 
+                   Gamma = Gamma, option = opt, verbose = TRUE)
+```
+
+# Visualization
+
+You can access to the parameters via the following commands:
+
+```{r}
+# Regression coefficients for each level r = 1,...,R.
+lrmoe$eta
+
+# Parameters of the gating network
+lrmoe$wk
+```
+
+# Plot
+
+## Log-likelihood
+
+```{r}
+lrmoe$plot()
+```
