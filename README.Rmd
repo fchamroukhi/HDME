@@ -1,0 +1,167 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.align = "center",
+  fig.path = "man/figures/README-"
+)
+```
+
+# **RMoE**: LASSO Regularized Mixture of Experts Models
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+R Toolbox to run the algorithms and to produce the results presented in the submitted paper:
+
+*Estimation and Feature Selection in Mixtures of Generalized Linear Experts Models.*
+Ref: arXiv:1907.06994, July, 2019 by Tuyen Huynh and Faicel Chamroukhi.
+Please cite the paper and the toolbox when using the code.
+
+
+This package has three main functions:
+
+* *GaussRMoE*: To fit Gaussian Regularized Mixture-of-Experts;
+* *LogisticRMoE*: To fit Logistic Regularized Mixture-of-Experts;
+* *PoissonRMoE*: To fit Poisson Regularized Mixture-of-Experts.
+
+# Installation
+
+You can install **RMoE** package from [GitHub](https://github.com/fchamroukhi/HDME) with:
+
+```{r, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("fchamroukhi/HDME")
+```
+
+To build *vignettes* for examples of usage, type the command below instead:
+
+```{r, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("fchamroukhi/HDME", 
+                         build_opts = c("--no-resave-data", "--no-manual"), 
+                         build_vignettes = TRUE)
+```
+
+Use the following command to display vignettes:
+
+```{r, eval = FALSE}
+browseVignettes("RMoE")
+```
+
+# Usage
+
+```{r, message = FALSE}
+library(RMoE)
+```
+
+<details>
+  <summary>Gaussian Regularized Mixture-of-Experts</summary>
+
+```{r, echo=TRUE}
+# Application to a simulated data set
+
+data("gaussian")
+X <- as.matrix(gaussian[, -8])
+y <- gaussian$V8
+
+K <- 2 # Number of experts
+Lambda <- 5
+Gamma <- 5
+opt <- FALSE # opt = FALSE: proximal Newton; opt = TRUE: proximal Newton-type
+
+grmoe <- GaussRMoE(Xm = X, Ym = y, K = K, Lambda = Lambda, 
+                   Gamma = Gamma, option = opt, verbose = TRUE)
+
+grmoe$plot()
+```
+
+```{r, echo = TRUE}
+# Application to a real data set
+
+data("housing")
+X <- as.matrix(housing[, -15])
+y <- housing$V15
+
+K <- 2 # Number of experts
+Lambda <- 42
+Gamma <- 10
+opt <- FALSE # opt = FALSE: proximal Newton; opt = TRUE: proximal Newton-type
+
+grmoe <- GaussRMoE(Xm = X, Ym = y, K = K, Lambda = Lambda, 
+                   Gamma = Gamma, option = opt, verbose = TRUE)
+
+grmoe$plot()
+```
+
+</details>
+
+<details>
+  <summary>Logistic Regularized Mixture-of-Experts</summary>
+
+```{r, echo=TRUE}
+# Application to a simulated data set
+
+data("logistic")
+X <- as.matrix(logistic[, -8])
+y <- logistic$V8
+
+K <- 2 # Number of experts
+Lambda <- 3
+Gamma <- 3
+opt <- FALSE # opt = FALSE: proximal Newton; opt = TRUE: proximal Newton-type
+
+lrmoe <- LogisticRMoE(Xmat = X, Ymat = y, K = K, Lambda = Lambda, 
+                   Gamma = Gamma, option = opt, verbose = TRUE)
+
+lrmoe$plot()
+```
+
+</details>
+
+<details>
+  <summary>Poisson Regularized Mixture-of-Experts</summary>
+  
+```{r, echo=TRUE}
+# Application to a simulated data set
+
+data("poisson")
+X <- as.matrix(poisson[, -8])
+y <- poisson$V8
+
+K <- 2 # Number of experts
+Lambda <- 20
+Gamma <- 10
+opt <- FALSE # opt = FALSE: proximal Newton; opt = TRUE: proximal Newton-type
+
+prmoe <- PoissonRMoE(Xmat = X, Ymat = y, K = K, Lambda = Lambda, 
+                   Gamma = Gamma, option = opt, verbose = TRUE)
+
+prmoe$plot()
+```
+
+```{r, echo = TRUE}
+# Application to a real data set
+
+data("cleveland")
+X <- as.matrix(cleveland[, -15])
+y <- cleveland$V15
+
+K <- 2 # Number of experts
+Lambda <- 10
+Gamma <- 4
+opt <- FALSE # opt = FALSE: proximal Newton; opt = TRUE: proximal Newton-type
+
+prmoe <- PoissonRMoE(Xmat = X, Ymat = y, K = K, Lambda = Lambda, 
+                   Gamma = Gamma, option = opt, verbose = TRUE)
+
+prmoe$plot()
+```
+
+</details>

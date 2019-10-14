@@ -24,6 +24,9 @@ Imports:
     plot3D,
     doParallel,
     foreach
+Suggests: 
+    knitr,
+    rmarkdown
 Collate:
     RMoE-package.R
     Pik.R
@@ -70,6 +73,7 @@ Collate:
     data-musk1.R
     data-poisson.R
     data-residential.R
+VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

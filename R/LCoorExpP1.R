@@ -1,4 +1,4 @@
-LCoorExpP = function(X, Y, U, R, eta, tau, lambda, k)
+LCoorExpP1 = function(X, Y, U, R, eta, tau, lambda, k)
   #Proximal Newton-type for the #k Expert parameter eta[k,,]
   #Input: array[eta], k, lambda[k]
 {
