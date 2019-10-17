@@ -42,6 +42,8 @@ intercept).}
 each EM iteration.}
 
 \item{\code{BIC}}{Numeric. Value of BIC (Bayesian Information Criterion).}
+
+\item{\code{Cluster}}{Numeric. Clustering label for each observation.}
 }}
 
 \section{Methods}{

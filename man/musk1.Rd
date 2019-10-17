@@ -5,10 +5,14 @@
 \alias{musk1}
 \title{The Musk-1 data set}
 \format{A data frame with 476 rows and 168 columns.}
+\source{
+\href{https://archive.ics.uci.edu/ml/datasets/Musk+(Version+1)}{https://archive.ics.uci.edu/ml/datasets/Musk+(Version+1)}
+}
 \usage{
 musk1
 }
 \description{
-The Musk-1 data set
+The Musk-1 data set described on the website UC Irvine Machine Learning
+Repository.
 }
 \keyword{datasets}

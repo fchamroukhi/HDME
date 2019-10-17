@@ -5,10 +5,14 @@
 \alias{ionosphere}
 \title{The Ionosphere data set}
 \format{A data frame with 351 rows and 35 columns.}
+\source{
+\href{https://archive.ics.uci.edu/ml/datasets/ionosphere}{https://archive.ics.uci.edu/ml/datasets/ionosphere}
+}
 \usage{
 ionosphere
 }
 \description{
-The Ionosphere data set
+The Ionosphere data set described on the website UC Irvine Machine Learning
+Repository.
 }
 \keyword{datasets}

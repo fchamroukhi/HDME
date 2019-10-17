@@ -196,7 +196,10 @@ on.exit(parallel::stopCluster(cl))
 # PWRITERES(MAXbetak, MAXwk, MAXLOG, MAXBIC, Y, X, K)
 ###
 
+tau <- Pe.step(betak, wk, Y, X, K)
+cluster <- apply(tau, 1, which.max)
+
 model <- PRMoE(X = X, Y = Y, K = K, Lambda = Lambda, Gamma = Gamma,
                wk = wk, betak = betak, loglik = L2,
-               storedloglik = Arr, BIC = BIC)
+               storedloglik = Arr, BIC = BIC, Cluster = cluster)
 }

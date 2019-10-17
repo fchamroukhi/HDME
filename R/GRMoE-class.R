@@ -21,6 +21,7 @@
 #' @field storedloglik Numeric vector. Stored values of the log-likelihood at
 #'   each EM iteration.
 #' @field BIC Numeric. Value of BIC (Bayesian Information Criterion).
+#' @field Cluster Numeric. Clustering label for each observation.
 GRMoE <- setRefClass(
   "GRMoE",
   fields = list(
@@ -41,12 +42,13 @@ GRMoE <- setRefClass(
 
     loglik = "numeric",
     storedloglik = "numeric",
-    BIC = "numeric"
+    BIC = "numeric",
+    Cluster = "numeric"
   ),
   methods = list(
     initialize = function(X = matrix(), Y = numeric(1), K = 1, Lambda = 0, Gamma = 0,
                           wk = matrix(), betak = matrix(), sigma = 1, loglik = -Inf,
-                          storedloglik = numeric(), BIC = -Inf) {
+                          storedloglik = numeric(), BIC = -Inf, Cluster = numeric()) {
 
       X <<- X
       Y <<- Y
@@ -65,6 +67,8 @@ GRMoE <- setRefClass(
       loglik <<- loglik
       storedloglik <<- storedloglik
       BIC <<- BIC
+      
+      Cluster <<- Cluster
 
     },
 

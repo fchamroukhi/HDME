@@ -198,9 +198,12 @@ on.exit(parallel::stopCluster(cl))
 # LWRITERES(MAXeta, MAXwk, MAXLOG, MAXBIC, Y, X, K, R, n)
 ###
 
+tau <- Le.step(eta, wk, Y, X, K, R)
+cluster <- apply(tau, 1, which.max)
+
 model <- LRMoE(X = X, Y = Y, K = K, Lambda = Lambda, Gamma = Gamma,
               wk = wk, eta = eta, loglik = L2,
-              storedloglik = Arr, BIC = BIC)
+              storedloglik = Arr, BIC = BIC, Cluster = cluster)
 
 return(model)
 

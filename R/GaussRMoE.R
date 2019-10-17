@@ -192,9 +192,12 @@ on.exit(parallel::stopCluster(cl))
 # GWRITERES(MAXbetak, MAXwk, MAXS, MAXLOG, MAXBIC, Y, X, K)
 ###
 
+tau <- Ge.step(betak, wk, S, Y, X, K)
+cluster <- apply(tau, 1, which.max)
+
 model <- GRMoE(X = X, Y = Y, K = K, Lambda = Lambda, Gamma = Gamma,
                       wk = wk, betak = betak, sigma = S, loglik = L2,
-                      storedloglik = Arr, BIC = BIC)
+                      storedloglik = Arr, BIC = BIC, Cluster = cluster)
 
 return(model)
 

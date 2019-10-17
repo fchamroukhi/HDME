@@ -42,6 +42,8 @@ Array of dimension \eqn{(K, R-1, d)}.}
 each EM iteration.}
 
 \item{\code{BIC}}{Numeric. Value of BIC (Bayesian Information Criterion).}
+
+\item{\code{Cluster}}{Numeric vector. Clustering label for each observation.}
 }}
 
 \section{Methods}{
