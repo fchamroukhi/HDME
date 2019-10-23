@@ -39,6 +39,10 @@ intercept).}
 \item{\code{storedloglik}}{Numeric vector. Stored values of the log-likelihood at
 each EM iteration.}
 
+\item{\code{zerocoeff}}{Matrix. Proportion of zero coefficients obtained during each
+iteration of the EM. First column gives the number of zero coefficients for
+\code{wk} and the second column for \code{betak}.}
+
 \item{\code{BIC}}{Numeric. Value of BIC (Bayesian Information Criterion).}
 
 \item{\code{Cluster}}{Numeric vector. Clustering label for each observation.}
@@ -47,6 +51,17 @@ each EM iteration.}
 \section{Methods}{
 
 \describe{
-\item{\code{plot()}}{Plot method.}
+\item{\code{plot(what = c("loglik", "zerocoefficients"))}}{Plot method.
+\describe{
+  \item{\code{what}}{The type of graph requested:
+    \itemize{
+      \item \code{"loglik" = } Value of the log-likelihood for
+        each iteration.
+      \item \code{"zerocoefficients" = } Proportion of zero
+        coefficients for each iteration.
+    }
+  }
+}
+By default, all the above graphs are produced.}
 }}
 

@@ -59,14 +59,14 @@ Gamma <- 5
 opt <- FALSE # opt = FALSE: proximal Newton; opt = TRUE: proximal Newton-type
 ```
 
-# Estimation
+## Estimation
 
 ```{r}
 grmoe <- GaussRMoE(Xm = X, Ym = y, K = K, Lambda = Lambda, 
                    Gamma = Gamma, option = opt, verbose = TRUE)
 ```
 
-# Visualization
+## Parameters
 
 You can access to the parameters via the following commands:
 
@@ -79,12 +79,18 @@ grmoe$betak
 grmoe$wk
 ```
 
-# Plot
+## Plot
 
-## Log-likelihood
+### Log-likelihood
 
 ```{r}
-grmoe$plot()
+grmoe$plot(what = "loglik")
+```
+
+### Proportion of zero coefficients
+
+```{r}
+grmoe$plot(what = "zerocoefficients")
 ```
 
 # Application to a real dataset
@@ -106,14 +112,14 @@ Gamma <- 10
 opt <- FALSE # opt = FALSE: proximal Newton; opt = TRUE: proximal Newton-type
 ```
 
-# Estimation
+## Estimation
 
 ```{r}
 grmoe <- GaussRMoE(Xm = X, Ym = y, K = K, Lambda = Lambda, 
                    Gamma = Gamma, option = opt, verbose = TRUE)
 ```
 
-# Visualization
+## Parameters
 
 You can access to the parameters via the following commands:
 
@@ -122,14 +128,20 @@ You can access to the parameters via the following commands:
 # Regression coefficients for each expert
 grmoe$betak
 
-# Parameters of the gting network
+# Parameters of the gating network
 grmoe$wk
 ```
 
-# Plot
+## Plot
 
-## Log-likelihood
+### Log-likelihood
 
 ```{r}
-grmoe$plot()
+grmoe$plot(what = "loglik")
+```
+
+### Proportion of zero coefficients
+
+```{r}
+grmoe$plot(what = "zerocoefficients")
 ```

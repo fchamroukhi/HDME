@@ -21,6 +21,9 @@
 #' @field storedloglik Numeric vector. Stored values of the log-likelihood at
 #'   each EM iteration.
 #' @field BIC Numeric. Value of BIC (Bayesian Information Criterion).
+#' @field zerocoeff Matrix. Proportion of zero coefficients obtained during each
+#'   iteration of the EM. First column gives the number of zero coefficients for
+#'   `wk` and the second column for `eta`.
 #' @field Cluster Numeric vector. Clustering label for each observation.
 LRMoE <- setRefClass(
   "LRMoE",
@@ -44,12 +47,15 @@ LRMoE <- setRefClass(
     storedloglik = "numeric",
     BIC = "numeric",
 
+    zerocoeff = "matrix",
+
     Cluster = "numeric"
   ),
   methods = list(
     initialize = function(X = matrix(), Y = numeric(1), K = 1, Lambda = 0, Gamma = 0,
                           wk = matrix(), eta = matrix(), loglik = -Inf,
-                          storedloglik = numeric(), BIC = -Inf, Cluster = numeric()) {
+                          storedloglik = numeric(), BIC = -Inf, zerocoeff = matrix(),
+                          Cluster = numeric()) {
 
       X <<- X
       Y <<- Y
@@ -69,15 +75,40 @@ LRMoE <- setRefClass(
       storedloglik <<- storedloglik
       BIC <<- BIC
 
+      zerocoeff <<- zerocoeff
+
       Cluster <<- Cluster
 
     },
 
-    plot = function() {
-      "Plot method."
+    plot = function(what = c("loglik", "zerocoefficients")) {
+      "Plot method.
+      \\describe{
+        \\item{\\code{what}}{The type of graph requested:
+          \\itemize{
+            \\item \\code{\"loglik\" = } Value of the log-likelihood for
+              each iteration.
+            \\item \\code{\"zerocoefficients\" = } Proportion of zero
+              coefficients for each iteration.
+          }
+        }
+      }
+      By default, all the above graphs are produced."
 
-      # Log-likelihood
-      graphics::plot(1:length(storedloglik), storedloglik, col = "blue", type = "o", pch = 19, xlab = 'Step', ylab = 'Log-likelihood')
+      what <- match.arg(what, several.ok = TRUE)
+
+      oldpar <- par(no.readonly = TRUE)
+      on.exit(par(oldpar), add = TRUE)
+
+      if (any(what == "loglik")) {
+        graphics::plot(1:length(storedloglik), storedloglik, col = "blue", type = "o", pch = 19, xlab = 'Step', ylab = 'Log-likelihood')
+      }
+
+      if (any(what == "zerocoefficients")) {
+        graphics::matplot(1:nrow(zerocoeff), zerocoeff, type = "l", col = 1:ncol(zerocoeff), xlab = "Step", ylab = "Proportion", ylim = c(0, 1))
+        legend("topright", legend = colnames(zerocoeff), col = 1:ncol(zerocoeff), lty = 1, cex = 0.9)
+        title(main = "Proportion of zero coefficients over EM iterations")
+      }
 
     }
   )

@@ -52,11 +52,17 @@ for(runstep in 1:N)
 {
   Nstep = 500
   arr = c(rep(0, Nstep))
-  ZMat <- matrix(rep(0, Nstep*K), ncol=K)
+  # ZMat <- matrix(rep(0, Nstep*K), ncol=K)
   eps = 1e-5
   d = dim(X)[2] #dim of X: d = p+1
   wk = matrix(rep(0,(K-1)*d), ncol = d)
   betak <- matrix(rep(0,K*d), ncol = K)
+  tau <- matrix(rep(0,n*K), ncol=K)
+
+  ###
+  zerocoeff <- matrix(ncol = 2, dimnames = list(NULL, c("wk", "betak")))
+  ###
+
 #===========Generated Beta for the experts
   # source("PInitial.R")
   # #for(k in 1:K)  betak[,k] = stats::runif(d,-2,2)
@@ -72,7 +78,7 @@ for(runstep in 1:N)
   # #source("Plot.R")
   # source("PWrite.R")
   #----------------------
-  tau <- matrix(rep(0,n*K), ncol=K)
+
   repeat{
   betak = Initial(X, Y, d, K)
   L2 = PLOG(X, Y, wk, betak, lambda, gamma, rho)
@@ -81,6 +87,11 @@ for(runstep in 1:N)
   }
   step = 1
   arr[step] = L2
+
+  ###
+  zerocoeff[step, 1] <- sum(wk == 0) / length(wk)
+  zerocoeff[step, 2] <- sum(betak == 0) / length(betak)
+  ###
 
   ###
   # print(paste("Step:", step))
@@ -119,6 +130,10 @@ for(runstep in 1:N)
     arr[step] = L2
 
     ###
+    zerocoeff <- rbind(zerocoeff, c(sum(wk == 0) / length(wk), sum(betak == 0) / length(betak)))
+    ###
+
+    ###
     # print(paste("Step:", step))
     # print("betak:")
     # print(betak)
@@ -127,7 +142,7 @@ for(runstep in 1:N)
     # print(paste("LOG: ", L2))
 
     if (verbose) {
-      message("EM - LRMoE: Iteration: ", step, " | log-likelihood: "  , L2)
+      message("EM - PRMoE: Iteration: ", step, " | log-likelihood: "  , L2)
     }
     ###
 
@@ -199,7 +214,7 @@ on.exit(parallel::stopCluster(cl))
 tau <- Pe.step(betak, wk, Y, X, K)
 cluster <- apply(tau, 1, which.max)
 
-model <- PRMoE(X = X, Y = Y, K = K, Lambda = Lambda, Gamma = Gamma,
-               wk = wk, betak = betak, loglik = L2,
-               storedloglik = Arr, BIC = BIC, Cluster = cluster)
+model <- PRMoE(X = X, Y = Y, K = K, Lambda = Lambda, Gamma = Gamma, wk = wk,
+               betak = betak, loglik = L2, storedloglik = Arr, BIC = BIC,
+               zerocoeff = zerocoeff, Cluster = cluster)
 }

@@ -52,10 +52,15 @@ for (i in 1:n) U[i,Y[i]] = 1
 pik = c(rep(0, K))
 Nstep = 1000
 arr = c(rep(0, Nstep))
-ZMat = matrix(rep(0, Nstep*K), ncol=K)
+# ZMat = matrix(rep(0, Nstep*K), ncol=K)
 eps = 1e-4
 wk = matrix(rep(0,(K-1)*d), ncol = d)
 eta <- array(0, dim = c(K,R-1,d))
+
+###
+zerocoeff <- matrix(ncol = 2, dimnames = list(NULL, c("wk", "eta")))
+###
+
 #Generated eta
 for (k in 1:K)
 {
@@ -79,6 +84,11 @@ tau <- matrix(rep(0,n*K), ncol=K)
 L2 = LLOG(X, Y, wk, eta, lambda, gamma, rho)
 step = 1
 arr[step] = L2
+
+###
+zerocoeff[step, 1] <- sum(wk == 0) / length(wk)
+zerocoeff[step, 2] <- sum(eta == 0) / length(eta)
+###
 
 ###
 # print(paste("Step:", step))
@@ -116,6 +126,10 @@ repeat
   L2 = LLOG(X, Y, wk, eta, lambda, gamma, rho)
   #ZeroCoeff(betak, d, K, step, ZMat)
   arr[step] = L2
+
+  ###
+  zerocoeff <- rbind(zerocoeff, c(sum(wk == 0) / length(wk), sum(eta == 0) / length(eta)))
+  ###
 
   ###
   # print(paste("Step:", step))
@@ -201,9 +215,9 @@ on.exit(parallel::stopCluster(cl))
 tau <- Le.step(eta, wk, Y, X, K, R)
 cluster <- apply(tau, 1, which.max)
 
-model <- LRMoE(X = X, Y = Y, K = K, Lambda = Lambda, Gamma = Gamma,
-              wk = wk, eta = eta, loglik = L2,
-              storedloglik = Arr, BIC = BIC, Cluster = cluster)
+model <- LRMoE(X = X, Y = Y, K = K, Lambda = Lambda, Gamma = Gamma, wk = wk,
+               eta = eta, loglik = L2, storedloglik = Arr, BIC = BIC,
+               zerocoeff = zerocoeff, Cluster = cluster)
 
 return(model)
 

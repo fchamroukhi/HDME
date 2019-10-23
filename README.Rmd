@@ -123,6 +123,24 @@ lrmoe <- LogisticRMoE(Xmat = X, Ymat = y, K = K, Lambda = Lambda,
 lrmoe$plot()
 ```
 
+```{r, echo = TRUE}
+# Application to a real data set
+
+data("ionosphere")
+X <- as.matrix(ionosphere[, -35])
+y <- ionosphere$V35
+
+K <- 2 # Number of experts
+Lambda <- 3
+Gamma <- 3
+opt <- FALSE # opt = FALSE: proximal Newton; opt = TRUE: proximal Newton-type
+
+lrmoe <- LogisticRMoE(Xmat = X, Ymat = y, K = K, Lambda = Lambda, 
+                   Gamma = Gamma, option = opt, verbose = TRUE)
+
+lrmoe$plot()
+```
+
 </details>
 
 <details>

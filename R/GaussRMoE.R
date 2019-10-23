@@ -48,13 +48,18 @@ rho = 0
 pik = c(rep(0, K))
 Nstep = 5000
 arr = c(rep(0, Nstep))
-ZMat <- matrix(rep(0, Nstep*K), ncol=K)
+# ZMat <- matrix(rep(0, Nstep*K), ncol=K)
 eps = 1e-5
 d <- dim(X)[2] #dim of X: d = p+1
 n <- dim(X)[1]
 S <- stats::runif(1, min = 5, max = 20) #variance
 wk = matrix(rep(0,(K-1)*d), ncol = d)
 betak <- matrix(rep(0, d*K), ncol = K)
+
+###
+zerocoeff <- matrix(ncol = 2, dimnames = list(NULL, c("wk", "betak")))
+###
+
 #Generated Beta
 for (k in 1:K)
 {
@@ -77,6 +82,11 @@ tau = matrix(rep(0,n*K), ncol=K)
 L2 = GLOG(X, Y, wk, betak, S, lambda, gamma, 0)
 step = 1
 arr[step] = L2
+
+###
+zerocoeff[step, 1] <- sum(wk == 0) / length(wk)
+zerocoeff[step, 2] <- sum(betak == 0) / length(betak)
+###
 
 ###
 # print(paste("Step:", step))
@@ -115,8 +125,13 @@ repeat
   tau = Ge.step(betak, wk, S, Y, X, K)
   S = sm.step(tau, X, Y, K, betak)
   L2 = GLOG(X, Y, wk, betak, S, lambda, gamma, 0)
+
   #ZeroCoeff(betak, d, K, step, ZMat)
   arr[step] = L2
+
+  ###
+  zerocoeff <- rbind(zerocoeff, c(sum(wk == 0) / length(wk), sum(betak == 0) / length(betak)))
+  ###
 
   ###
   # print(paste("Step:", step))
@@ -195,9 +210,9 @@ on.exit(parallel::stopCluster(cl))
 tau <- Ge.step(betak, wk, S, Y, X, K)
 cluster <- apply(tau, 1, which.max)
 
-model <- GRMoE(X = X, Y = Y, K = K, Lambda = Lambda, Gamma = Gamma,
-                      wk = wk, betak = betak, sigma = S, loglik = L2,
-                      storedloglik = Arr, BIC = BIC, Cluster = cluster)
+model <- GRMoE(X = X, Y = Y, K = K, Lambda = Lambda, Gamma = Gamma, wk = wk,
+               betak = betak, sigma = S, loglik = L2, storedloglik = Arr,
+               BIC = BIC, Cluster = cluster, zerocoeff = zerocoeff)
 
 return(model)
 

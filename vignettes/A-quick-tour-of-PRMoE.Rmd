@@ -59,14 +59,14 @@ Gamma <- 10
 opt <- FALSE # opt = FALSE: proximal Newton; opt = TRUE: proximal Newton-type
 ```
 
-# Estimation
+## Estimation
 
 ```{r}
 prmoe <- PoissonRMoE(Xmat = X, Ymat = y, K = K, Lambda = Lambda, 
                    Gamma = Gamma, option = opt, verbose = TRUE)
 ```
 
-# Visualization
+## Parameters
 
 You can access to the parameters via the following commands:
 
@@ -79,12 +79,18 @@ prmoe$betak
 prmoe$wk
 ```
 
-# Plot
+## Plot
 
-## Log-likelihood
+### Log-likelihood
 
 ```{r}
-prmoe$plot()
+prmoe$plot(what = "loglik")
+```
+
+### Proportion of zero coefficients
+
+```{r}
+prmoe$plot(what = "zerocoefficients")
 ```
 
 # Application to a real dataset
@@ -106,14 +112,14 @@ Gamma <- 4
 opt <- FALSE # opt = FALSE: proximal Newton; opt = TRUE: proximal Newton-type
 ```
 
-# Estimation
+## Estimation
 
 ```{r}
 prmoe <- PoissonRMoE(Xmat = X, Ymat = y, K = K, Lambda = Lambda, 
                    Gamma = Gamma, option = opt, verbose = TRUE)
 ```
 
-# Visualization
+## Parameters
 
 You can access to the parameters via the following commands:
 
@@ -122,14 +128,20 @@ You can access to the parameters via the following commands:
 # Regression coefficients for each expert
 prmoe$betak
 
-# Parameters of the gting network
+# Parameters of the gating network
 prmoe$wk
 ```
 
-# Plot
+## Plot
 
-## Log-likelihood
+### Log-likelihood
 
 ```{r}
-prmoe$plot()
+prmoe$plot(what = "loglik")
+```
+
+### Proportion of zero coefficients
+
+```{r}
+prmoe$plot(what = "zerocoefficients")
 ```

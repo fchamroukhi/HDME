@@ -59,14 +59,14 @@ Gamma <- 3
 opt <- FALSE # opt = FALSE: proximal Newton; opt = TRUE: proximal Newton-type
 ```
 
-# Estimation
+## Estimation
 
 ```{r}
 lrmoe <- LogisticRMoE(Xmat = X, Ymat = y, K = K, Lambda = Lambda, 
                    Gamma = Gamma, option = opt, verbose = TRUE)
 ```
 
-# Visualization
+## Parameters
 
 You can access to the parameters via the following commands:
 
@@ -78,10 +78,16 @@ lrmoe$eta
 lrmoe$wk
 ```
 
-# Plot
+## Plot
 
-## Log-likelihood
+### Log-likelihood
 
 ```{r}
-lrmoe$plot()
+lrmoe$plot(what = "loglik")
+```
+
+### Proportion of zero coefficients
+
+```{r}
+lrmoe$plot(what = "zerocoefficients")
 ```
